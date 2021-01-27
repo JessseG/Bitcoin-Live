@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../static/style.css" />
+    <title>Coinview</title>
+  </head>
+
+  <header>
+    <ul id="page-nav-bar">
+      <li id="options">
+        <img src="../static/options-icon.svg" id="options-icon" />
+      </li>
+      <li><h2 id="header-title">Bitcoin LIVE</h2></li>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#buy">Buy</a></li>
+      <li><a href="#sell">Sell</a></li>
+    </ul>
+  </header>
+  <!-- {% block title %} -->
+  <body>
+    <div id="status-bar">
+      <span id="page-trade-symbol">
+        <h3>
+          <select name="select-trade" id="select-trade">
+            <option value="BTCUSDT">BTC&#8239;/&#8239;USDT</option>
+            <option value="BTCEUR">BTC&#8239;/&#8239;EUR</option>
+            <option value="EURUSDT">EUR&#8239;/&#8239;USDT</option>
+          </select>
+          <!-- <span class="btc-title">BTC</span>
+          <span class="slash">/</span>
+          <span class="usdt-title">USDT</span> -->
+        </h3>
+      </span>
+      <span id="real-time-price"></span>
+    </div>
+    <div class="row-1">
+      <div class="column" id="row-1-column-1">
+        <ul id="chart-nav-bar">
+          <li><label id="time-label">Time</label></li>
+          <li>
+            <select
+              name="minute-candles"
+              class="select-candle-size"
+              id="select-minute-candles"
+            >
+              <option value="" selected disabled hidden>m</option>
+              <option value="1m" id="1m">1m</option>
+              <option value="3m" id="3m">3m</option>
+              <option value="5m" id="5m">5m</option>
+              <option value="15m" id="15m">15m</option>
+              <option value="30m" id="30m">30m</option>
+            </select>
+          </li>
+          <li>
+            <select
+              name="hour-candles"
+              class="select-candle-size"
+              id="select-hour-candles"
+            >
+              <option value="" selected disabled hidden>H</option>
+              <option value="1h" id="1H">1H</option>
+              <option value="2h" id="2H">2H</option>
+              <option value="4h" id="4H">4H</option>
+              <option value="6h" id="6H">6H</option>
+              <option value="8h" id="8H">8H</option>
+            </select>
+          </li>
+          <li>
+            <select
+              name="day-candles"
+              class="select-candle-size"
+              id="select-day-candles"
+            >
+              <option value="" selected disabled hidden>D</option>
+              <option value="1d" id="1D">1D</option>
+              <option value="3d" id="3D">3D</option>
+            </select>
+          </li>
+          <!-- <li>
+            <img src="../static/last.svg" id="reset-chart-icon" />
+            <img src="../static/circle-right.svg" id="reset-chart-icon" />
+          </li> -->
+        </ul>
+        <div id="charts">
+          <img src="../static/last.svg" id="reset-chart-icon" />
+          <!-- <img src="../static/circle-right.svg" id="reset-chart-icon" /> -->
+        </div>
+        <!-- <button type="button" id="reset-chart">>></button> -->
+        <div id="trades"></div>
+      </div>
+      <div class="column" id="row-1-column-2">
+        <div class="trading-window" id="buy-window">
+          <h2>Buy</h2>
+          {% with messages = get_flashed_messages() %} {% if messages %}
+          <div id="error-box">
+            {% for message in messages %} {{ message }} {% endfor %}
+          </div>
+          {% endif %} {% endwith %}
+          <!-- BUY -->
+          <form action="/buy" method="post" id="buy-form">
+            <h4>Price</h4>
+            <input
+              class="input-price"
+              type="text"
+              id="buy-limit-price"
+              name="buy-limit-price"
+              placeholder="USDT"
+            />
+            <span id="change-price">
+              <button class="plus-ten" id="buy-limit-plus-ten" type="button">
+                +
+              </button>
+              <button class="minus-ten" id="buy-limit-minus-ten" type="button">
+                −
+              </button>
+            </span>
+            <!-- <hr /> -->
+            <h4>Amount</h4>
+            <input
+              class="input-amount"
+              type="text"
+              id="buy-limit-quantity"
+              name="buy-limit-quantity"
+              placeholder="BTC"
+            />
+            <button id="maximize-buy" type="button">Max</button>
+            <hr />
+            <!-- <select name="symbol" id="symbol">
+          {% for symbol in symbols %}
+          <option>{{ symbol }}</option>
+          {% endfor %}
+          </select> -->
+            <input type="submit" name="buy" value="BUY" id="submit-buy" />
+          </form>
+        </div>
+        <div class="trading-window" id="sell-window">
+          <h2>Sell</h2>
+          <!-- SELL -->
+          <form action="/sell" method="post" id="sell-form">
+            <h4>Price</h4>
+            <input
+              class="input-price"
+              type="text"
+              id="sell-limit-price"
+              name="sell-limit-price"
+              placeholder="USDT"
+            />
+            <span id="change-price">
+              <button class="plus-ten" id="sell-limit-plus-ten" type="button">
+                +
+              </button>
+              <button class="minus-ten" id="sell-limit-minus-ten" type="button">
+                −
+              </button>
+            </span>
+            <!-- <hr /> -->
+            <h4>Amount</h4>
+            <input
+              class="input-amount"
+              type="text"
+              id="sell-limit-quantity"
+              name="sell-limit-quantity"
+              placeholder="BTC"
+            />
+            <button id="maximize-sell" type="button">Max</button>
+            <hr />
+            <!-- <select name="symbol" id="symbol">
+          {% for symbol in symbols %}
+          <option>{{ symbol }}</option>
+          {% endfor %}
+          </select> -->
+            <input type="submit" name="sell" value="SELL" id="submit-sell" />
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="row-2">
+      <div class="column" id="row-2-column-1"></div>
+      <div class="column" id="row-2-column-2">
+        <div id="automation-window">
+          <div id="automation-header">
+            <h2 id="automation-title">Automation</h2>
+            <!-- Rounded switch -->
+            <label class="switch" id="toggle-automation">
+              <input type="checkbox" />
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <div id="automation-body">
+            <!-- <h4>Amount</h4> -->
+            <input
+              class="input-auto-quantity"
+              type="text"
+              id="auto-trade-quantity"
+              name="auto-trade-quantity"
+              placeholder="BTC"
+            />
+            <button id="maximize-auto-trade" type="button">Max</button>
+            <br />
+            <select name="select-auto-symbol" id="select-auto-symbol">
+              <option value="BTCUSDT">BTC&#8239;/&#8239;USDT</option>
+              <option value="BTCEUR">BTC&#8239;/&#8239;EUR</option>
+              <option value="EURUSDT">EUR&#8239;/&#8239;USDT</option>
+            </select>
+            <select name="select-auto-strategy" id="select-auto-strategy">
+              <option value="MACD">MACD</option>
+              <option value="RSI">RSI</option>
+              <option value="STOCH">STOCH</option>
+            </select>
+            <select name="select-auto-candles" id="select-auto-candles">
+              <option value="5m">5m</option>
+              <option value="15m">15m</option>
+              <option value="30m">30m</option>
+              <option value="1H">1H</option>
+              <option value="2H">2H</option>
+            </select>
+            <input
+              type="range"
+              name="trade-percentage"
+              id="trade-percentage"
+              min="1"
+              max="100"
+              step="1"
+            />
+            <hr />
+            <input
+              type="submit"
+              value="Submit"
+              id="submit-automation"
+              name="submit-automation"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="color: white">Tasks</h2>
+    <h4 style="color: rgb(166, 0, 207); letter-spacing: 1px">
+      <p>
+        - 4h switching error> 4h is defualt now <br />
+        - Calculate trade fees <br />
+        - Assign candlestick buttons to routes <br />
+        - Make Buy / Sell window look pro <br />
+        - Fix 1980 <br />
+        - Indicators <br />
+        - Automation
+      </p>
+    </h4>
+
+    <h3 style="color: white">get_trade_fee()</h3>
+    <h3>BTC/USDT: {{ usdt_fee }}</h3>
+    <h3>BTC/EUR: {{ eur_fee }}</h3>
+
+    <hr />
+    <h3 style="color: white">Raw Balances: get_asset_balance()</h3>
+
+    <h3>BTC Balance: {{ btc_raw_balance }}</h3>
+    <h3>USDT Balance: {{ usdt_raw_balance }}</h3>
+    <h3>EUR Balance: {{ eur_raw_balance }}</h3>
+
+    <hr />
+
+    <h3>BTC/USDT TickerSize: {{ btc_usdt_tickSize }}</h3>
+    <h3>BTC/EUR TickerSize: {{ btc_eur_tickSize }}</h3>
+
+    <h3>BTC/USDT StepSize: {{ btc_usdt_stepSize }}</h3>
+    <h3>BTC/EUR StepSize: {{ btc_eur_stepSize }}</h3>
+
+    <hr />
+
+    <h3 style="color: white">Last price: --> get_all_tickers()</h3>
+    <h3>Price: {{ btc_usdt_price }}</h3>
+
+    <hr />
+
+    <h3 style="color: white">get_symbol_info()</h3>
+    <h3>{{ btc_usdt_info }}</h3>
+    <h3>{{ btc_eur_info }}</h3>
+
+    <div id="my_balances">
+      <h2>Balances</h2>
+
+      <table id="balance-table">
+        {% for balance in my_balances %}
+        <!-- <h3>{{ balance }}</h3> -->
+        <tr>
+          <td id="asset">{{ balance['asset'] }}</td>
+          <td id="value">{{ balance['free'] }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <h3>Settings</h3>
+    <div id="settings">
+      <label>RSI</label>
+      <input type="checkbox" />
+      <input type="text" id="rsi_length" name="rsi_length" placeholder="14" />
+      Overbought
+      <input
+        type="text"
+        name="rsi_overbought"
+        id="rsi_overbought"
+        placeholder="70"
+      />
+      Oversold
+      <input
+        type="text"
+        name="rsi_oversold"
+        id="rsi_oversold"
+        placeholder="30"
+      />
+    </div>
+
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+      window.jQuery ||
+        document.write(
+          `<script src="{{url_for('static', filename='DynamicUI.js')}}">\x3C/script>`
+        );
+    </script> -->
+    <!-- <script src="BinanceSocket.js"></script> -->
+    <script src="../static/Charts.js"></script>
+    <script src="../static/DynamicUI.js"></script>
+    <!-- <script src="{{ url_for('static', filename='DynamicUI.js') }}"></script> -->
+  </body>
+  <!-- {% endblock %} -->
+</html>
