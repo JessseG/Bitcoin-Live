@@ -349,8 +349,6 @@ def generateCandles():
 
     return jsonify(processed_candlesticks)
 
-from app import app
-app.run(debug=False)
 # @app.route('/1m_candles')
 # def min1():
 #     candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_1MINUTE, "14 Jan, 2021")
