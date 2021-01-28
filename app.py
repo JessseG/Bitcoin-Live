@@ -126,38 +126,71 @@ def webhook():
     side = data['strategy']['order-action'].upper()
     symbol = data['ticker']
 
-    fee = None
+    # fee = None
     maxAmount = None
     balance = None
 
      # Gets latest prices
-    btc_usdt_market_price = list(filter(lambda x: x['symbol'] == 'BTCUSDT', client.get_all_tickers()))[0]['price']
-    btc_eur_market_price = list(filter(lambda x: x['symbol'] == 'BTCEUR', client.get_all_tickers()))[0]['price']
+    # btc_usdt_market_price = list(filter(lambda x: x['symbol'] == 'BTCUSDT', client.get_all_tickers()))[0]['price']
+    # btc_eur_market_price = list(filter(lambda x: x['symbol'] == 'BTCEUR', client.get_all_tickers()))[0]['price']
 
     # Formats latest prices
-    btc_usdt_price = floatPrecision(btc_usdt_market_price, btc_usdt_tickSize)
-    btc_eur_price = floatPrecision(btc_eur_market_price, btc_eur_tickSize)
+    # btc_usdt_price = floatPrecision(btc_usdt_market_price, btc_usdt_tickSize)
+    # btc_eur_price = floatPrecision(btc_eur_market_price, btc_eur_tickSize)
 
     # btc_usdt_trade_balance = floatPrecision(btc_raw_balance, btc_usdt_stepSize)
 
+    # usdt_raw_balance - (usdt_raw_balance * fee)
+
+    # Gets the trading symbol info
+    btc_usdt_info = client.get_symbol_info('BTCUSDT')
+    btc_eur_info = client.get_symbol_info('BTCEUR')
+    global btc_raw_balance
+
     if symbol == "BTCUSDT":
-        fee = float(btc_usdt_fee)
+        fee = float(0.001)
+        # print(trade_balance)
+        # fee = float(btc_usdt_fee)
         # fee = float(btc_usdt_fee['tradeFee'][0]['maker'])
         if side == "BUY":
-            usdt_max_trade = float(floatPrecision((usdt_raw_balance - (usdt_raw_balance * fee)), btc_usdt_tickSize))
+            global usdt_raw_balance
+            usdt_raw_balance = float(client.get_asset_balance(asset='USDT')['free'])
+            usdt_buy_balance = usdt_raw_balance - (usdt_raw_balance * fee)
+            global btc_usdt_tickSize
+            btc_usdt_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', btc_usdt_info['filters']))[0]['tickSize'])
+            print(usdt_buy_balance)
+            print(btc_usdt_tickSize)
+            usdt_max_trade = float(floatPrecision(usdt_buy_balance, btc_usdt_tickSize))
             order_response = buyMarketOrder(symbol, usdt_max_trade)
         elif side == "SELL":
-            btc_max_trade = float(floatPrecision((btc_raw_balance - (btc_raw_balance * fee)), btc_usdt_stepSize))
+            btc_raw_balance = float(client.get_asset_balance(asset='BTC')['free'])
+            btc_sell_balance = btc_raw_balance - (btc_raw_balance * fee)
+            global btc_usdt_stepSize
+            btc_usdt_stepSize = list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_usdt_info['filters']))[0]['stepSize']
+            btc_max_trade = float(floatPrecision(btc_sell_balance, btc_usdt_stepSize))
             order_response = sellMarketOrder(symbol, btc_max_trade)
 
     elif symbol == "BTCEUR":
-        fee = float(btc_eur_fee)
+        fee = float(0.001)
+        # fee = float(btc_eur_fee)
         # fee = float(btc_eur_fee['tradeFee'][0]['maker'])
         if side == "BUY":
-            eur_max_trade = float(floatPrecision((eur_raw_balance - (eur_raw_balance * fee)), btc_eur_tickSize))
+            global eur_raw_balance
+            eur_raw_balance = float(client.get_asset_balance(asset='EUR')['free'])
+            eur_buy_balance = eur_raw_balance - (eur_raw_balance * fee)
+            global btc_eur_tickSize
+            btc_eur_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', btc_eur_info['filters']))[0]['tickSize'])
+            print(eur_buy_balance)
+            print(btc_eur_tickSize)
+            eur_max_trade = float(floatPrecision(eur_buy_balance, btc_eur_tickSize))
             order_response = buyMarketOrder(symbol, eur_max_trade)
+
         elif side == "SELL":
-            btc_max_trade = float(floatPrecision((btc_raw_balance - (btc_raw_balance * fee)), btc_eur_stepSize))
+            btc_raw_balance = float(client.get_asset_balance(asset='BTC')['free'])
+            btc_sell_balance = btc_raw_balance - (btc_raw_balance * fee)
+            global btc_eur_stepSize
+            btc_eur_stepSize = list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_eur_info['filters']))[0]['stepSize']
+            btc_max_trade = float(floatPrecision(btc_sell_balance, btc_eur_stepSize))
             order_response = sellMarketOrder(symbol, btc_max_trade)
 
     # order_response = order(side, symbol, 0.000801)
@@ -221,7 +254,8 @@ def index():
     btc_eur_info = client.get_symbol_info('BTCEUR')
 
     # Gets USDT & EUR price tickSizes for Selling BTC for USDT & EUR
-    global btc_usdt_tickSize, btc_eur_tickSize
+    global btc_usdt_tickSize
+    global btc_eur_tickSize
     btc_usdt_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', btc_usdt_info['filters']))[0]['tickSize'])
     btc_eur_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', btc_eur_info['filters']))[0]['tickSize'])
     
