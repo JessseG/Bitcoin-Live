@@ -138,27 +138,29 @@ def webhook():
     btc_usdt_price = floatPrecision(btc_usdt_market_price, btc_usdt_tickSize)
     btc_eur_price = floatPrecision(btc_eur_market_price, btc_eur_tickSize)
 
-    btc_usdt_trade_balance = floatPrecision(btc_raw_balance, btc_usdt_stepSize)
+    # btc_usdt_trade_balance = floatPrecision(btc_raw_balance, btc_usdt_stepSize)
 
     if symbol == "BTCUSDT":
-        fee = float(btc_usdt_fee['tradeFee'][0]['taker'])
+        fee = float(btc_usdt_fee)
+        # fee = float(btc_usdt_fee['tradeFee'][0]['maker'])
         if side == "BUY":
             usdt_max_trade = float(floatPrecision((usdt_raw_balance - (usdt_raw_balance * fee)), btc_usdt_tickSize))
-            buyMarketOrder(symbol, usdt_max_trade)
+            order_response = buyMarketOrder(symbol, usdt_max_trade)
         elif side == "SELL":
             btc_max_trade = float(floatPrecision((btc_raw_balance - (btc_raw_balance * fee)), btc_usdt_stepSize))
-            sellMarketOrder(symbol, btc_max_trade)
+            order_response = sellMarketOrder(symbol, btc_max_trade)
 
     elif symbol == "BTCEUR":
-        fee = float(btc_eur_fee['tradeFee'][0]['taker'])
+        fee = float(btc_eur_fee)
+        # fee = float(btc_eur_fee['tradeFee'][0]['maker'])
         if side == "BUY":
-            usdt_balance = float(floatPrecision((eur_raw_balance - (eur_raw_balance * fee)), btc_usdt_tickSize))
-            maxAmount = float(floatPrecision(btc_raw_balance - btc_raw_balance * fee, btc_usdt_stepSize))
+            eur_max_trade = float(floatPrecision((eur_raw_balance - (eur_raw_balance * fee)), btc_eur_tickSize))
+            order_response = buyMarketOrder(symbol, eur_max_trade)
         elif side == "SELL":
-            maxAmount = "hello"
+            btc_max_trade = float(floatPrecision((btc_raw_balance - (btc_raw_balance * fee)), btc_eur_stepSize))
+            order_response = sellMarketOrder(symbol, btc_max_trade)
 
-
-    order_response = order(side, symbol, 0.000801)
+    # order_response = order(side, symbol, 0.000801)
 
     if order_response:
         return {
@@ -211,8 +213,8 @@ def index():
 
     # Gets fees for different trades: BTCUSDT & BTCEUR
     global btc_usdt_fee, btc_eur_fee
-    btc_usdt_fee = client.get_trade_fee(symbol='BTCUSDT')['tradeFee'][0]['taker']
-    btc_eur_fee = client.get_trade_fee(symbol='BTCEUR')
+    btc_usdt_fee = client.get_trade_fee(symbol='BTCUSDT')['tradeFee'][0]['maker']
+    btc_eur_fee = client.get_trade_fee(symbol='BTCEUR')['tradeFee'][0]['maker']
 
     # Gets the trading symbol info
     btc_usdt_info = client.get_symbol_info('BTCUSDT')
@@ -263,9 +265,14 @@ def index():
 
 @app.route('/buy', methods=['POST'])
 def buy():
+    if request.form['passcode-buy'] != config.SUBMISSION_CODE:
+        return {
+            "code": "error",
+            "message": "Failed Authentication"
+        }
     try:
         order = client.create_order(
-            symbol=request.form['symbol'],
+            symbol=request.form['buy-symbol'],
             side=SIDE_BUY,
             type=ORDER_TYPE_LIMIT,
             timeInForce=TIME_IN_FORCE_GTC,
@@ -279,9 +286,14 @@ def buy():
 
 @app.route('/sell')
 def sell():
+    if request.form['passcode-sell'] != config.SUBMISSION_CODE:
+        return {
+            "code": "error",
+            "message": "Failed Authentication"
+        }
     try:
         order = client.create_order(
-            symbol=request.form['symbol'],
+            symbol=request.form['sell-symbol'],
             side=SIDE_SELL,
             type=ORDER_TYPE_LIMIT,
             timeInForce=TIME_IN_FORCE_GTC,
@@ -567,15 +579,37 @@ def generateCandles():
 
 @app.route('/max_buy', methods=['POST'])
 def maximizeBuy():
+    symbol = request.form['buySymbol']
     limitPrice = request.form['buyPrice']
-    maxBuyAmount = float(calculateMaxBuy(limitPrice, btc_usdt_tickSize, usdt_raw_balance, btc_usdt_stepSize))
+
+    if symbol == "BTCUSDT":
+        maxBuyAmount = float(calculateMaxBuy(limitPrice, btc_usdt_tickSize, usdt_raw_balance, btc_usdt_stepSize))
+        # maxBuyAmount = float(floatPrecision((btc_raw_balance - (btc_raw_balance * btc_usdt_fee)), btc_usdt_stepSize)) #no longer taker fee
+    elif symbol == "BTCEUR":
+        maxBuyAmount = float(calculateMaxBuy(limitPrice, btc_eur_tickSize, eur_raw_balance, btc_eur_stepSize))
+        # maxBuyAmount = float(floatPrecision((btc_raw_balance - (btc_raw_balance * btc_eur_fee)), btc_eur_stepSize)) #no longer taker fee
+    elif symbol == "EURUSDT":
+        maxBuyAmount = "N/A"
+
+    print(maxBuyAmount)
+    # maxBuyAmount = float(calculateMaxBuy(limitPrice, btc_usdt_tickSize, usdt_raw_balance, btc_usdt_stepSize))
     return jsonify({'maxBuy': maxBuyAmount})
 
 @app.route('/max_sell', methods=['POST'])
 def maximizeSell():
+    symbol = request.form['sellSymbol']
     limitPrice = request.form['sellPrice']
-    # maxSellAmount = calculateMaxBuy(limitPrice, btc_usdt_tickSize, btc_raw_balance, btc_usdt_stepSize)
-    maxSellAmount = float(floatPrecision(btc_raw_balance, btc_usdt_stepSize))
+
+    if symbol == "BTCUSDT":
+        maxSellAmount = float(floatPrecision(btc_raw_balance, btc_usdt_stepSize))
+        # maxSellAmount = floatPrecision((btc_raw_balance - (btc_raw_balance * btc_usdt_fee)), btc_usdt_stepSize) #no longer taker fee
+    elif symbol == "BTCEUR":
+        maxSellAmount = float(floatPrecision(btc_raw_balance, btc_eur_stepSize))
+        # maxSellAmount = floatPrecision((btc_raw_balance - (btc_raw_balance * btc_eur_fee)), btc_eur_stepSize) #no longer taker fee
+    elif symbol == "EURUSDT":
+        maxSellAmount = "N/A"
+
+    print(maxSellAmount)
     return jsonify({'maxSell': maxSellAmount})
      
 

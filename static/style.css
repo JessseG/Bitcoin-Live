@@ -172,14 +172,15 @@ select {
 #row-1-column-1 {
   /* width: 100%; */
   /* order: 1; */
+  border: 2px solid aqua;
 }
 
 #row-1-column-2 {
-  /* border: 2px solid red; */
+  border: 2px solid red;
   display: block;
   margin-left: auto;
   order: 2;
-  margin-right: 2vw;
+  margin-right: 1vw;
 }
 
 #chart-nav-bar {
@@ -328,10 +329,11 @@ select {
   margin-bottom: 1.5vh;
   margin-top: 0;
   /* display: inline-block; */
-  padding: 2.5vh;
+  padding: 2vh;
   padding-top: 0.1vh;
   padding-bottom: 0.7vh;
   border-radius: 0.4vh;
+  padding-left: 1.6vh;
   border: 1px solid rgb(146, 146, 146);
   background: #484848;
   /* width: auto; */
@@ -347,7 +349,57 @@ select {
   margin: 2vh 0;
   margin-left: 1.7vh;
   font-size: 3.5vh;
+  display: inline-block;
   /* color: white; */
+}
+
+.select-symbol {
+  height: 3.3vh;
+  display: inline;
+  vertical-align: 0.3vh;
+  margin-left: 0.3vw;
+  /* max-width: 7.5vw; */
+  /* vertical-align: 0.4vh; */
+  /* background: #cccccc; */
+  background: none;
+  border: none;
+  outline: none;
+  border-radius: 0.5vh;
+  /* color: rgb(55, 55, 55); */
+  color: black;
+  padding-right: -0.3vh;
+  letter-spacing: 0.1px;
+  -webkit-text-stroke: 0.3px;
+  -webkit-text-stroke-color: rgb(41, 41, 41);
+  font-size: 2.2vh;
+}
+
+.select-symbol option {
+  background: rgb(247, 247, 247);
+  font-size: 1.8vh;
+  color: #000000;
+  letter-spacing: 0.2vw;
+  font-weight: 530;
+}
+
+.passcode {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  /* margin-left: 1.5vh; */
+  display: inline;
+  float: right;
+  margin: 3.3vh 0.5vw 0 0;
+  width: 2.3vw;
+  outline: none;
+  font-size: 1.5vh;
+  font-weight: 530;
+  letter-spacing: 0.2vh;
+  padding: 0.3vh 1vh;
+  padding-right: 0.7vh;
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 0.4vh;
+  color: white;
+  background-color: #242424;
 }
 
 #error-box {
@@ -368,22 +420,58 @@ select {
 #buy-form,
 #sell-form {
   margin-bottom: 0.4vh;
+  /* border: 1px solid red; */
+}
+
+.input-label h4 {
+  padding-left: 1.6vh;
+  font-size: 1.9vh;
+}
+
+.price-box {
+  margin: 1vw;
+  background-color: #bbbbbb;
+  vertical-align: middle;
+  border-radius: 0.4vh;
+  font-size: 1.9vh;
+  color: #151515;
+  font-weight: 530;
+  padding: 0.2vh 0.6vw;
+  padding-left: 0.7vw;
+  letter-spacing: 0.1vh;
+}
+
+.price-box span {
+  margin: auto 0;
 }
 
 .input-price,
 .input-amount {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  margin-left: 1.5vh;
+  margin: 0.4vh 0.4vw;
+  /* margin-left: 1.5vh; */
   outline: none;
-  font-size: 1.8vh;
+  font-size: 2vh;
   font-weight: 530;
   letter-spacing: 0.1vh;
+  text-align: right;
   padding: 0.3vh 0.3vw;
+  padding-right: 0;
   border: 1px solid rgb(0, 0, 0);
+  border: none;
   border-radius: 0.4vh;
-  margin-right: 0.1vw;
+  color: black;
+  /* margin-right: 0.1vw; */
   background-color: #bbbbbb;
+  min-width: 8vw;
+  max-width: 16vw;
+  /* margin-bottom: 1vh; */
+}
+
+.input-price::-webkit-outer-spin-button,
+.input-price::-webkit-inner-spin-button {
+  margin-left: 1.5vh;
 }
 
 .input-price::-webkit-input-placeholder,
@@ -396,14 +484,25 @@ select {
   color: #1a1a1a;
 }
 
-.input-price {
-  width: 16vw;
-  margin-bottom: 1vh;
-}
-
-#change-price {
+.change-price {
   float: right;
   margin-left: 0.5vh;
+}
+
+.fast-price-btn {
+  background: rgb(255, 219, 13);
+  border: 1px solid black;
+  padding: 0.4vh;
+  border-radius: 0.5vh;
+}
+
+.fast-price-icon {
+  display: inline;
+  cursor: pointer;
+  height: 3vh;
+  width: 3.8vh;
+  opacity: 100%;
+  vertical-align: -0.7vh;
 }
 
 .plus-ten {
@@ -432,11 +531,6 @@ select {
   border: 0.1vh solid darkgray;
   border-left: 0;
   cursor: pointer;
-}
-
-.input-amount {
-  width: 16vw;
-  margin-bottom: 1vh;
 }
 
 #maximize-buy,

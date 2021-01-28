@@ -94,32 +94,47 @@
       </div>
       <div class="column" id="row-1-column-2">
         <div class="trading-window" id="buy-window">
-          <h2>Buy</h2>
-          {% with messages = get_flashed_messages() %} {% if messages %}
-          <div id="error-box">
-            {% for message in messages %} {{ message }} {% endfor %}
-          </div>
-          {% endif %} {% endwith %}
           <!-- BUY -->
           <form action="/buy" method="post" id="buy-form">
-            <h4>Price</h4>
-            <input
-              class="input-price"
-              type="text"
-              id="buy-limit-price"
-              name="buy-limit-price"
-              placeholder="USDT"
-            />
-            <span id="change-price">
+            <h2>Buy</h2>
+            <select
+              name="buy-symbol"
+              class="select-symbol"
+              id="select-buy-symbol"
+            >
+              <option value="BTCUSDT">BTC/USDT</option>
+              <option value="BTCEUR">BTC/EUR</option>
+              <option value="EURUSDT">EUR/USDT</option>
+            </select>
+            <input type="password" name="passcode-buy" class="passcode" />
+            {% with messages = get_flashed_messages() %} {% if messages %}
+            <div id="error-box">
+              {% for message in messages %} {{ message }} {% endfor %}
+            </div>
+            {% endif %} {% endwith %}
+            <!-- <label class="input-label"><h4>Price</h4></label> -->
+            <div class="price-box">
+              <span>Price</span>
+              <input
+                class="input-price"
+                type="number"
+                id="buy-limit-price"
+                name="buy-limit-price"
+                min="0"
+                step="10"
+              />
+              <span>USDT</span>
+            </div>
+            <!-- <span class="change-price">
               <button class="plus-ten" id="buy-limit-plus-ten" type="button">
                 +
               </button>
               <button class="minus-ten" id="buy-limit-minus-ten" type="button">
                 −
               </button>
-            </span>
+            </span> -->
             <!-- <hr /> -->
-            <h4>Amount</h4>
+            <label class="input-label"><h4>Amount</h4></label>
             <input
               class="input-amount"
               type="text"
@@ -128,6 +143,8 @@
               placeholder="BTC"
             />
             <button id="maximize-buy" type="button">Max</button>
+            <!-- <input type="password" name="passcode" id="passcode" /> -->
+
             <hr />
             <!-- <select name="symbol" id="symbol">
           {% for symbol in symbols %}
@@ -138,27 +155,45 @@
           </form>
         </div>
         <div class="trading-window" id="sell-window">
-          <h2>Sell</h2>
           <!-- SELL -->
           <form action="/sell" method="post" id="sell-form">
-            <h4>Price</h4>
-            <input
-              class="input-price"
-              type="text"
-              id="sell-limit-price"
-              name="sell-limit-price"
-              placeholder="USDT"
-            />
-            <span id="change-price">
+            <h2>Sell</h2>
+            <select
+              name="sell-symbol"
+              class="select-symbol"
+              id="select-sell-symbol"
+            >
+              <option value="BTCUSDT">BTC/USDT</option>
+              <option value="BTCEUR">BTC/EUR</option>
+              <option value="EURUSDT">EUR/USDT</option>
+            </select>
+            <input type="password" name="passcode-sell" class="passcode" />
+            <label class="input-label"><h4>Price</h4></label>
+            <div class="price-box">
+              <input
+                class="input-price"
+                type="number"
+                id="sell-limit-price"
+                name="sell-limit-price"
+                min="0"
+                step="10"
+                placeholder="USDT"
+              />
+            </div>
+            <!-- <button id="maximize-sell" type="button">Max</button> -->
+            <!-- <span class="fast-price-btn"> -->
+            <img src="../static/fast-price.png" class="fast-price-icon" />
+            <!-- </span> -->
+            <!-- <span class="change-price">
               <button class="plus-ten" id="sell-limit-plus-ten" type="button">
                 +
               </button>
               <button class="minus-ten" id="sell-limit-minus-ten" type="button">
                 −
               </button>
-            </span>
+            </span> -->
             <!-- <hr /> -->
-            <h4>Amount</h4>
+            <label class="input-label"><h4>Amount</h4></label>
             <input
               class="input-amount"
               type="text"
@@ -168,11 +203,6 @@
             />
             <button id="maximize-sell" type="button">Max</button>
             <hr />
-            <!-- <select name="symbol" id="symbol">
-          {% for symbol in symbols %}
-          <option>{{ symbol }}</option>
-          {% endfor %}
-          </select> -->
             <input type="submit" name="sell" value="SELL" id="submit-sell" />
           </form>
         </div>

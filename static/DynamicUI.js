@@ -9,6 +9,7 @@ $("#maximize-buy").click(function (event) {
     url: "/max_buy",
     type: "POST",
     data: {
+      buySymbol: $("#select-buy-symbol").val(),
       buyPrice: $("#buy-limit-price").val(),
     },
     success: function (result) {
@@ -27,6 +28,7 @@ $("#maximize-sell").click(function (event) {
     url: "/max_sell",
     type: "POST",
     data: {
+      sellSymbol: $("#select-sell-symbol").val(),
       sellPrice: $("#sell-limit-price").val(),
     },
     success: function (result) {
@@ -101,3 +103,5 @@ binanceSocketLivePrice.onmessage = function (event) {
 
   prevPrice = newPrice;
 };
+
+document.getElementById("sell-limit-price").value;
