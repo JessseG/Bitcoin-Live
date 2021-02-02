@@ -1,7 +1,8 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  background-color: rgb(36, 36, 36);
+  /* background-color: rgb(36, 36, 36); */
+  background-color: rgb(20, 19, 36);
   margin-top: 8.5vh;
 }
 
@@ -172,11 +173,11 @@ select {
 #row-1-column-1 {
   /* width: 100%; */
   /* order: 1; */
-  border: 2px solid aqua;
+  /* border: 2px solid aqua; */
 }
 
 #row-1-column-2 {
-  border: 2px solid red;
+  /* border: 2px solid red; */
   display: block;
   margin-left: auto;
   order: 2;
@@ -340,6 +341,16 @@ select {
   /* float: right; */
 }
 
+hr {
+  width: 92%;
+  display: block;
+  text-align: center;
+  background-color: black;
+  /* border-color: black; */
+  /* margin: auto; */
+  border: 1px solid rgb(186, 186, 186);
+}
+
 /* #trading-view-buy,
 #trading-view-sell {
   display: block;
@@ -347,17 +358,19 @@ select {
 
 .trading-window h2 {
   margin: 2vh 0;
-  margin-left: 1.7vh;
+  margin-left: 1vw;
   font-size: 3.5vh;
   display: inline-block;
   /* color: white; */
 }
 
-.select-symbol {
+.select-limit-symbol {
+  display: none;
   height: 3.3vh;
-  display: inline;
-  vertical-align: 0.3vh;
-  margin-left: 0.3vw;
+  /* display: inline; */
+  margin-top: 3vh;
+  /* vertical-align: -3vh; */
+  margin-right: 0.7vw;
   /* max-width: 7.5vw; */
   /* vertical-align: 0.4vh; */
   /* background: #cccccc; */
@@ -372,10 +385,12 @@ select {
   -webkit-text-stroke: 0.3px;
   -webkit-text-stroke-color: rgb(41, 41, 41);
   font-size: 2.2vh;
+  float: right;
+  /* border: 1px solid red; */
 }
 
 .select-symbol option {
-  background: rgb(247, 247, 247);
+  background: rgb(116, 116, 116);
   font-size: 1.8vh;
   color: #000000;
   letter-spacing: 0.2vw;
@@ -386,10 +401,10 @@ select {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   /* margin-left: 1.5vh; */
-  display: inline;
+  /* display: inline; */
   float: right;
-  margin: 3.3vh 0.5vw 0 0;
-  width: 2.3vw;
+  margin: 3.3vh 0.7vw 0 0;
+  width: 3vw;
   outline: none;
   font-size: 1.5vh;
   font-weight: 530;
@@ -402,10 +417,17 @@ select {
   background-color: #242424;
 }
 
+.passcode::-webkit-input-placeholder {
+  color: #b3b3b3;
+  font-weight: 300;
+  opacity: 60%;
+  letter-spacing: 1px;
+}
+
 #error-box {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  display: inline-block;
+  display: block;
   padding: 0.3vh 0.5vw;
   font-weight: 500;
   font-size: 1.8vh;
@@ -421,6 +443,7 @@ select {
 #sell-form {
   margin-bottom: 0.4vh;
   /* border: 1px solid red; */
+  position: relative;
 }
 
 .input-label h4 {
@@ -428,61 +451,193 @@ select {
   font-size: 1.9vh;
 }
 
-.price-box {
-  margin: 1vw;
-  background-color: #bbbbbb;
+.input-price-block {
+  /* position: relative; */
+  margin: 0 1vh;
+  margin-top: 1vw;
+  margin-bottom: 1vh;
+  /* margin-right: 0.5vh;
+  margin-left: 1vw; */
+  /* border: 1px solid blue; */
+  /* width: 85%; */
+  padding: 0;
+  display: block;
+  text-align: center;
+}
+
+.input-price-box {
+  /* margin-top: 1vw;
+  margin-right: 0.5vh;
+  margin-left: 1vw;
+  margin-bottom: 1vh; */
+  background-color: #767676;
   vertical-align: middle;
   border-radius: 0.4vh;
   font-size: 1.9vh;
   color: #151515;
   font-weight: 530;
-  padding: 0.2vh 0.6vw;
-  padding-left: 0.7vw;
+  padding: 0.1vh 0 0.1vh 0.6vw;
   letter-spacing: 0.1vh;
+  display: inline-block;
+  position: relative;
+  /* border: 1px solid red; */
+  /* line-height: 3.5vh; */
 }
 
-.price-box span {
-  margin: auto 0;
+.label-placeholder {
+  margin: 0;
+  padding: 0;
+  /* border: 1px solid red; */
+  letter-spacing: 0.4px;
 }
 
-.input-price,
-.input-amount {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  margin: 0.4vh 0.4vw;
-  /* margin-left: 1.5vh; */
+.input-price {
+  font-family: "Open Sans";
+  margin: 0.3vh 0.4vw;
   outline: none;
-  font-size: 2vh;
+  font-size: 1.8vh;
   font-weight: 530;
-  letter-spacing: 0.1vh;
+  letter-spacing: 1px;
   text-align: right;
   padding: 0.3vh 0.3vw;
   padding-right: 0;
-  border: 1px solid rgb(0, 0, 0);
   border: none;
   border-radius: 0.4vh;
-  color: black;
-  /* margin-right: 0.1vw; */
-  background-color: #bbbbbb;
-  min-width: 8vw;
-  max-width: 16vw;
-  /* margin-bottom: 1vh; */
+  color: white;
+  background-color: #767676;
+  width: 58%;
+  caret-color: #272727;
+  /* border: 1px solid red; */
 }
 
-.input-price::-webkit-outer-spin-button,
+.input-amount {
+  font-family: "Open Sans";
+  margin: 0.3vh 0.4vw 0.3vh 0vw;
+  outline: none;
+  font-size: 1.8vh;
+  font-weight: 530;
+  letter-spacing: 1px;
+  text-align: right;
+  padding: 0.3vh 0.3vw;
+  padding-right: 0;
+  border: none;
+  border-radius: 0.4vh;
+  color: white;
+  background-color: #767676;
+  width: 55%;
+  caret-color: #272727;
+  /* border: 1px solid red; */
+}
+
+.input-price::-webkit-outer-spin-button {
+  margin: 0;
+  margin-left: 1.4vh;
+  opacity: 1;
+  border-radius: 2vh;
+  filter: invert(20%);
+  filter: saturation(110%);
+  -webkit-appearance: none;
+  margin: 0;
+  /* height: 3vh; */
+  /* width: 1vh; */
+}
+
 .input-price::-webkit-inner-spin-button {
-  margin-left: 1.5vh;
+  margin: 0;
+  margin-left: 1.4vh;
+  opacity: 1;
+  height: 2.5vh;
+  border-radius: 2vh;
+  transform: scale(1.07);
+  filter: invert(20%);
+  filter: saturation(110%);
+  -webkit-appearance: none;
+  margin: 0;
+  /* width: 1vh; */
 }
 
-.input-price::-webkit-input-placeholder,
+.input-amount::-webkit-outer-spin-button {
+  margin: 0;
+  margin-left: 1.4vh;
+  opacity: 1;
+  /* height: 3vh; */
+  /* width: 1vh; */
+  border-radius: 2vh;
+  filter: invert(20%);
+  filter: saturation(110%);
+}
+
+.input-amount::-webkit-inner-spin-button {
+  margin: 0;
+  margin-left: 1.4vh;
+  opacity: 1;
+  height: 2.5vh;
+  border-radius: 2vh;
+  transform: scale(1.07);
+  filter: invert(20%);
+  filter: saturation(110%);
+  /* width: 1vh; */
+}
+
+.input-amount-block {
+  /* position: relative; */
+  /* margin-right: 0.5vh;
+  margin-left: 1vw; */
+  margin: 0 1vh;
+  margin-top: 1vw;
+  margin-bottom: 1vh;
+  /* border: 3px solid blue; */
+  /* width: 85%; */
+  padding: 0;
+  display: block;
+  text-align: center;
+}
+
+.input-amount-box {
+  /* margin-top: 1vw;
+  margin-right: 0.5vh;
+  margin-left: 1vw;
+  margin-bottom: 1vh; */
+  /* line-height: 3.5vh; */
+  background-color: #767676;
+  vertical-align: middle;
+  border-radius: 0.4vh;
+  font-size: 1.9vh;
+  color: #151515;
+  font-weight: 530;
+  padding: 0.1vh 0 0.1vh 0.3vw;
+  letter-spacing: 0.1vh;
+  display: inline-block;
+  position: relative;
+  /* border: 1px solid red; */
+}
+
+.asset-placeholder {
+  margin: 0;
+  padding: 0;
+  /* margin-left: 0; */
+  /* margin-right: -2.5vh; */
+  /* text-align: right; */
+  /* vertical-align: -0.1vh; */
+  /* border: 1px solid blue; */
+  /* float: right; */
+  /* display: inline-block; */
+}
+
+.input-amount-box .asset-placeholder {
+  vertical-align: -0.1vh;
+  margin-right: -0.8%;
+  margin-left: 0.8%;
+}
+
+/* .input-price::-webkit-input-placeholder,
 .input-amount::-webkit-input-placeholder {
   text-align: right;
   padding-right: 0.1vw;
   font-size: 1.8vh;
   letter-spacing: 0;
-  /* padding-bottom: 10px; */
   color: #1a1a1a;
-}
+} */
 
 .change-price {
   float: right;
@@ -492,17 +647,74 @@ select {
 .fast-price-btn {
   background: rgb(255, 219, 13);
   border: 1px solid black;
-  padding: 0.4vh;
+  /* padding: 0.4vh; */
   border-radius: 0.5vh;
 }
 
+.buy-limit-options {
+  /* border: 1px solid greenyellow; */
+  /* padding: 0 1.5vw; */
+  display: block;
+  /* margin: auto; */
+  /* width: 40%; */
+  /* text-align: center; */
+}
+
 .fast-price-icon {
-  display: inline;
+  /* border: 1px solid greenyellow; */
+  display: inline-block;
   cursor: pointer;
-  height: 3vh;
-  width: 3.8vh;
+  height: 3.5vh;
+  width: 2.4vh;
   opacity: 100%;
-  vertical-align: -0.7vh;
+  vertical-align: -1.2vh;
+  /* margin-left: 1vh; */
+  /* transform: rotate(90deg); */
+}
+
+#limit-trade-percent {
+  /* margin-left: 1.3vw; */
+  /* width: 65%; */
+}
+
+/* .slidecontainer {
+  width: 100%;
+} */
+
+.slider2 {
+  -webkit-appearance: none;
+  margin: 0 0 1.5vh 0.8vw;
+  width: 70%;
+  height: 0.8vh;
+  background: rgb(202, 202, 202);
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+  border-radius: 0.4vh;
+  vertical-align: -0.2vh;
+}
+
+.slider2:hover {
+  opacity: 1;
+}
+
+.slider2::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.7vh;
+  height: 1.7vh;
+  background: rgb(17, 17, 17);
+  cursor: pointer;
+  border-radius: 0.7vh;
+}
+
+.slider2::-moz-range-thumb {
+  width: 1.7vh;
+  height: 1.7vh;
+  background: rgb(17, 17, 17);
+  cursor: pointer;
+  border-radius: 0.7vh;
 }
 
 .plus-ten {
@@ -535,19 +747,22 @@ select {
 
 #maximize-buy,
 #maximize-sell {
+  text-align: center;
   background-color: rgb(236, 54, 54);
   cursor: pointer;
-  width: 2.4vw;
-  padding: 0.6vh 0;
+  /* width: 2.6vw; */
+  padding: 0.4vh 0.4vh;
   border-radius: 0.4vh;
-  vertical-align: 0.3vh;
-  margin-left: 0.2vh;
+  vertical-align: -0.2vh;
+  /* margin-left: 0.2vh; */
+  margin: 0 0.5vh;
   font-size: 1.6vh;
-  font-weight: 550;
-  border: 0.1vh solid darkgray;
+  font-weight: 500;
+  border: 0.2px solid rgb(55, 55, 55);
   cursor: pointer;
   outline: none;
   transition: all 0.1s ease-in-out;
+  color: white;
   /* filter: contrast(80%) brightness(80%); */
 }
 
@@ -562,36 +777,46 @@ select {
 
 #submit-buy {
   outline: none;
-  font-weight: bold;
-  font-size: 2vh;
+  font-weight: 500;
+  font-size: 1.9vh;
   letter-spacing: 0vh;
   padding: 0.7vh 0.7vw;
-  border: 0.2vh solid darkgray;
+  border: 0.2px solid rgb(48, 48, 48);
   border-radius: 0.4vh;
-  background-color: green;
+  background-color: rgb(68, 197, 68);
+  color: white;
+  /* opacity: 85%; */
   /* margin-left: 0.3vh; */
-  margin-top: 0.7vh;
-  width: 95%;
-  transform: translateX(2.2%);
+  width: 93%;
+  /* transform: translateX(2.2%); */
   cursor: pointer;
   cursor: pointer;
+  font-family: "Open Sans";
+  display: block;
+  margin: auto;
+  margin-top: 1.3vh;
 }
 
 #submit-sell {
+  background-color: rgb(236, 54, 54);
   outline: none;
-  font-weight: bold;
-  font-size: 2vh;
+  font-weight: 500;
+  font-size: 1.9vh;
   letter-spacing: 0vh;
   padding: 0.7vh 0.7vw;
-  border: 0.2vh solid darkgray;
+  border: 0.2px solid rgb(48, 48, 48);
   border-radius: 0.4vh;
-  background-color: rgb(236, 54, 54);
+  color: white;
+  /* opacity: 85%; */
   /* margin-left: 0.3vh; */
-  margin-top: 0.7vh;
-  width: 95%;
-  transform: translateX(2.2%);
+  width: 93%;
+  /* transform: translateX(2.2%); */
   cursor: pointer;
   cursor: pointer;
+  font-family: "Open Sans";
+  display: block;
+  margin: auto;
+  margin-top: 1.3vh;
 }
 
 table#balance-table {
@@ -644,8 +869,39 @@ h4 {
   margin-top: 1.3vh;
 }
 
+#row-2-column-1 {
+  /* border: 2px solid aqua; */
+  width: 100%;
+  margin: 1vh;
+}
+
+#trade-history-table {
+  border-collapse: collapse;
+  border-radius: 4vh;
+}
+
+#trade-history-table th {
+  width: 7%;
+  padding: 1.1vh 0.7vh;
+  font-size: 2vh;
+  font-family: "Open Sans";
+  background-color: #3b3b3b;
+}
+
+#trade-history-table td {
+  width: 7%;
+  padding: 1.1vh 0.7vh;
+  font-family: "Open Sans";
+  font-size: 1.6vh;
+  font-weight: 495;
+  letter-spacing: 1px;
+  text-align: center;
+  color: white;
+  background-color: #4d4d4d;
+}
+
 #row-2-column-2 {
-  border: 2px solid red;
+  /* border: 2px solid red; */
   display: block;
   margin-left: auto;
   order: 2;
@@ -657,7 +913,7 @@ h4 {
   border: 1px solid rgb(146, 146, 146);
   border-radius: 0.4vh;
   padding: 2vh 2vh 0 2vh;
-  margin: 1vh 0.9vw;
+  margin: 1vh;
   background: #484848;
 }
 

@@ -31,18 +31,18 @@ automation_symbol = current_symbol
 candles = ["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","1d","3d"]
 periods = ["1MINUTE","3MINUTE","5MINUTE","15MINUTE","30MINUTE","1HOUR","2HOUR","4HOUR","6HOUR","8HOUR","1DAY","3DAY"]
 timeframes = [
-    "14 Jan, 2021",
-    "9 Jan, 2021",
-    "5 Jan, 2021",
-    "1 Dec, 2020",
-    "1 Jul, 2020",
-    "1 Apr, 2020",
-    "1 Aug, 2019",
-    "1 Apr, 2019",
-    "1 Jan, 2019",
-    "1 Jun, 2018",
-    "1 Jan, 2017",
-    "1 Jan, 2017"
+    "28 Jan, 2021", #1m
+    "22 Jan, 2021",  #3m
+    "10 Jan, 2021",  #5m
+    "1 Dec, 2020",  #15m
+    "1 Sept, 2020",  #30m
+    "1 Apr, 2020",  #1H
+    "1 Aug, 2019",  #2H
+    "1 Apr, 2019",  #4H
+    "1 Jan, 2019",  #6H
+    "1 Jun, 2018",  #8H
+    "1 Jan, 2017",  #1D
+    "1 Jan, 2017"   #3D
 ]
 
 def selectCandle(size):
@@ -109,6 +109,37 @@ def sellMarketOrder(symbol, quantity):
 
     return order
 
+def buyLimitOrder(symbol, quantity, price):
+    try:
+        print(f"Sending Order:  Limit Buy - {quantity} {symbol}")
+        order = client.order_limit_buy(
+            symbol=symbol,
+            quantity=quantity,
+            price=price)
+        print(order)
+    
+    except Exception as e:
+        # flash(e.message, "error")
+        print("Exception occurred - {}".format(e))
+        return False
+
+    return order
+
+def sellLimitOrder(symbol, quantity, price):
+    try:
+        print(f"Sending Order:  Limit Buy - {quantity} {symbol}")
+        order = client.order_limit_sell(
+            symbol=symbol,
+            quantity=quantity,
+            price=price)
+        print(order)
+    
+    except Exception as e:
+        # flash(e.message, "error")
+        print("Exception occurred - {}".format(e))
+        return False
+
+    return order
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -123,7 +154,9 @@ def webhook():
     
     print(data['bar'])
 
+    order_type = data['strategy']['order-type']
     side = data['strategy']['order-action'].upper()
+    order_price = data['strategy']['order-price']
     symbol = data['ticker']
 
     # fee = None
@@ -131,8 +164,12 @@ def webhook():
     balance = None
 
      # Gets latest prices
-    # btc_usdt_market_price = list(filter(lambda x: x['symbol'] == 'BTCUSDT', client.get_all_tickers()))[0]['price']
-    # btc_eur_market_price = list(filter(lambda x: x['symbol'] == 'BTCEUR', client.get_all_tickers()))[0]['price']
+    btc_eur_last_price = list(filter(lambda x: x['symbol'] == 'BTCEUR', client.get_all_tickers()))[0]['price']
+
+    # btc_usdt_fee = client.get_trade_fee(symbol='BTCUSDT')['tradeFee'][0]['maker']
+    btc_eur_fee = client.get_trade_fee(symbol='BTCEUR')['tradeFee'][0]['maker']
+
+
 
     # Formats latest prices
     # btc_usdt_price = floatPrecision(btc_usdt_market_price, btc_usdt_tickSize)
@@ -145,53 +182,97 @@ def webhook():
     # Gets the trading symbol info
     btc_usdt_info = client.get_symbol_info('BTCUSDT')
     btc_eur_info = client.get_symbol_info('BTCEUR')
+
     global btc_raw_balance
 
-    if symbol == "BTCUSDT":
-        fee = float(0.001)
-        # print(trade_balance)
-        # fee = float(btc_usdt_fee)
-        # fee = float(btc_usdt_fee['tradeFee'][0]['maker'])
-        if side == "BUY":
-            global usdt_raw_balance
-            usdt_raw_balance = float(client.get_asset_balance(asset='USDT')['free'])
-            usdt_buy_balance = usdt_raw_balance - (usdt_raw_balance * fee)
-            global btc_usdt_tickSize
-            btc_usdt_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', btc_usdt_info['filters']))[0]['tickSize'])
-            print(usdt_buy_balance)
-            print(btc_usdt_tickSize)
-            usdt_max_trade = float(floatPrecision(usdt_buy_balance, btc_usdt_tickSize))
-            order_response = buyMarketOrder(symbol, usdt_max_trade)
-        elif side == "SELL":
-            btc_raw_balance = float(client.get_asset_balance(asset='BTC')['free'])
-            btc_sell_balance = btc_raw_balance - (btc_raw_balance * fee)
-            global btc_usdt_stepSize
-            btc_usdt_stepSize = list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_usdt_info['filters']))[0]['stepSize']
-            btc_max_trade = float(floatPrecision(btc_sell_balance, btc_usdt_stepSize))
-            order_response = sellMarketOrder(symbol, btc_max_trade)
+    if order_type == "limit":
+        if symbol == "BTCUSDT":
+            if side == "BUY":
+                btc_usdt_last_price = float(list(filter(lambda x: x['symbol'] == 'BTCUSDT', client.get_all_tickers()))[0]['price'])
+                btc_usdt_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', btc_usdt_info['filters']))[0]['tickSize'])
+                btc_usdt_stepSize = float(list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_usdt_info['filters']))[0]['stepSize'])
+                usdt_raw_balance = float(client.get_asset_balance(asset='USDT')['free'])
+                price = btc_usdt_last_price - 10
+                quantity = float(calculateMaxBuy(price, btc_usdt_tickSize, usdt_raw_balance, btc_usdt_stepSize))
+                order_response = buyLimitOrder(symbol, quantity, price)
 
-    elif symbol == "BTCEUR":
-        fee = float(0.001)
-        # fee = float(btc_eur_fee)
-        # fee = float(btc_eur_fee['tradeFee'][0]['maker'])
-        if side == "BUY":
-            global eur_raw_balance
-            eur_raw_balance = float(client.get_asset_balance(asset='EUR')['free'])
-            eur_buy_balance = eur_raw_balance - (eur_raw_balance * fee)
-            global btc_eur_tickSize
-            btc_eur_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', btc_eur_info['filters']))[0]['tickSize'])
-            print(eur_buy_balance)
-            print(btc_eur_tickSize)
-            eur_max_trade = float(floatPrecision(eur_buy_balance, btc_eur_tickSize))
-            order_response = buyMarketOrder(symbol, eur_max_trade)
+            elif side == "SELL":
+                btc_usdt_last_price = float(list(filter(lambda x: x['symbol'] == 'BTCUSDT', client.get_all_tickers()))[0]['price'])
+                # btc_usdt_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', btc_usdt_info['filters']))[0]['tickSize'])
+                btc_usdt_stepSize = float(list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_usdt_info['filters']))[0]['stepSize'])
+                btc_raw_balance = float(client.get_asset_balance(asset='BTC')['free'])
+                price = btc_usdt_last_price + 10
+                quantity = float(floatPrecision(btc_raw_balance, btc_usdt_stepSize))
+                # quantity = float(calculateMaxSell(price, btc_usdt_tickSize, usdt_raw_balance, btc_usdt_stepSize))
+                order_response = sellLimitOrder(symbol, quantity, price)
+        
+        elif symbol == "BTCEUR":
+            if side == "BUY":
+                btc_eur_last_price = float(list(filter(lambda x: x['symbol'] == 'BTCEUR', client.get_all_tickers()))[0]['price'])
+                btc_eur_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', btc_eur_info['filters']))[0]['tickSize'])
+                btc_eur_stepSize = float(list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_eur_info['filters']))[0]['stepSize'])
+                eur_raw_balance = float(client.get_asset_balance(asset='EUR')['free'])
+                price = btc_eur_last_price - 10
+                quantity = float(calculateMaxBuy(price, btc_eur_tickSize, eur_raw_balance, btc_eur_stepSize))
+                order_response = buyLimitOrder(symbol, quantity, price)
 
-        elif side == "SELL":
-            btc_raw_balance = float(client.get_asset_balance(asset='BTC')['free'])
-            btc_sell_balance = btc_raw_balance - (btc_raw_balance * fee)
-            global btc_eur_stepSize
-            btc_eur_stepSize = list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_eur_info['filters']))[0]['stepSize']
-            btc_max_trade = float(floatPrecision(btc_sell_balance, btc_eur_stepSize))
-            order_response = sellMarketOrder(symbol, btc_max_trade)
+            elif side == "SELL":
+                btc_eur_last_price = float(list(filter(lambda x: x['symbol'] == 'BTCEUR', client.get_all_tickers()))[0]['price'])
+                # btc_eur_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', btc_eur_info['filters']))[0]['tickSize'])
+                btc_eur_stepSize = float(list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_eur_info['filters']))[0]['stepSize'])
+                btc_raw_balance = float(client.get_asset_balance(asset='BTC')['free'])
+                price = btc_eur_last_price + 10
+                quantity = float(floatPrecision(btc_raw_balance, btc_eur_stepSize))
+                print(quantity)
+                # quantity = float(calculateMaxSell(price, btc_eur_tickSize, eur_raw_balance, btc_eur_stepSize))
+                order_response = sellLimitOrder(symbol, quantity, price)
+
+    elif order_type == "market":
+        if symbol == "BTCUSDT":
+            fee = float(0.001)
+            # print(trade_balance)
+            # fee = float(btc_usdt_fee)
+            # fee = float(btc_usdt_fee['tradeFee'][0]['maker'])
+            if side == "BUY":
+                # global usdt_raw_balance
+                usdt_raw_balance = float(client.get_asset_balance(asset='USDT')['free'])
+                usdt_buy_balance = usdt_raw_balance - (usdt_raw_balance * fee)
+                # global btc_usdt_tickSize
+                btc_usdt_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', btc_usdt_info['filters']))[0]['tickSize'])
+                print(usdt_buy_balance)
+                print(btc_usdt_tickSize)
+                usdt_max_trade = float(floatPrecision(usdt_buy_balance, btc_usdt_tickSize))
+                order_response = buyMarketOrder(symbol, usdt_max_trade)
+            elif side == "SELL":
+                btc_raw_balance = float(client.get_asset_balance(asset='BTC')['free'])
+                btc_sell_balance = btc_raw_balance - (btc_raw_balance * fee)
+                # global btc_usdt_stepSize
+                btc_usdt_stepSize = list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_usdt_info['filters']))[0]['stepSize']
+                btc_max_trade = float(floatPrecision(btc_sell_balance, btc_usdt_stepSize))
+                order_response = sellMarketOrder(symbol, btc_max_trade)
+
+        elif symbol == "BTCEUR":
+            fee = float(0.001)
+            # fee = float(btc_eur_fee)
+            # fee = float(btc_eur_fee['tradeFee'][0]['maker'])
+            if side == "BUY":
+                # global eur_raw_balance
+                eur_raw_balance = float(client.get_asset_balance(asset='EUR')['free'])
+                eur_buy_balance = eur_raw_balance - (eur_raw_balance * fee)
+                # global btc_eur_tickSize
+                btc_eur_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', btc_eur_info['filters']))[0]['tickSize'])
+                print(eur_buy_balance)
+                print(btc_eur_tickSize)
+                eur_max_trade = float(floatPrecision(eur_buy_balance, btc_eur_tickSize))
+                order_response = buyMarketOrder(symbol, eur_max_trade)
+
+            elif side == "SELL":
+                btc_raw_balance = float(client.get_asset_balance(asset='BTC')['free'])
+                btc_sell_balance = btc_raw_balance - (btc_raw_balance * fee)
+                # global btc_eur_stepSize
+                btc_eur_stepSize = list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_eur_info['filters']))[0]['stepSize']
+                btc_max_trade = float(floatPrecision(btc_sell_balance, btc_eur_stepSize))
+                order_response = sellMarketOrder(symbol, btc_max_trade)
 
     # order_response = order(side, symbol, 0.000801)
 
@@ -261,13 +342,13 @@ def index():
     
     # Gets BTC quantity stepSizes for Buying BTC with USDT & EUR
     global btc_usdt_stepSize, btc_eur_stepSize
-    btc_usdt_stepSize = list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_usdt_info['filters']))[0]['stepSize']
-    btc_eur_stepSize = list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_eur_info['filters']))[0]['stepSize']
+    btc_usdt_stepSize = float(list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_usdt_info['filters']))[0]['stepSize'])
+    btc_eur_stepSize = float(list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_eur_info['filters']))[0]['stepSize'])
 
     # Gets latest prices
     global btc_usdt_raw_price
-    btc_usdt_raw_price = list(filter(lambda x: x['symbol'] == 'BTCUSDT', client.get_all_tickers()))[0]['price']
-    btc_eur_raw_price = list(filter(lambda x: x['symbol'] == 'BTCEUR', client.get_all_tickers()))[0]['price']
+    btc_usdt_raw_price = float(list(filter(lambda x: x['symbol'] == 'BTCUSDT', client.get_all_tickers()))[0]['price'])
+    btc_eur_raw_price = float(list(filter(lambda x: x['symbol'] == 'BTCEUR', client.get_all_tickers()))[0]['price'])
 
     # Formats latest prices
     btc_usdt_price = floatPrecision(btc_usdt_raw_price, btc_usdt_tickSize)
@@ -318,7 +399,7 @@ def buy():
 
     return redirect('/')
 
-@app.route('/sell')
+@app.route('/sell', methods=['POST'])
 def sell():
     if request.form['passcode-sell'] != config.SUBMISSION_CODE:
         return {
@@ -368,7 +449,7 @@ def default():
 @app.route('/generate_candles', methods=['POST'])
 def generateCandles():
 
-    symbol = request.form['tradeSymbol']
+    symbol = request.form['tradeSymbol'].upper()
     size = request.form['candleSize']
 
     period = selectCandle(size)
@@ -395,221 +476,6 @@ def generateCandles():
 
     return jsonify(processed_candlesticks)
 
-# @app.route('/1m_candles')
-# def min1():
-#     candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_1MINUTE, "14 Jan, 2021")
-
-#     processed_candlesticks = []
-
-#     for data in candlesticks:
-#         candlestick = {
-#             "time": data[0] / 1000,
-#             "open": data[1],
-#             "high": data[2],
-#             "low": data[3], 
-#             "close": data[4],
-#         }
-#         processed_candlesticks.append(candlestick)
-
-#     return jsonify(processed_candlesticks)
-
-# @app.route('/3m_candles')
-# def min3():
-#     candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_3MINUTE, "9 Jan, 2021")
-
-#     processed_candlesticks = []
-
-#     for data in candlesticks:
-#         candlestick = {
-#             "time": data[0] / 1000,
-#             "open": data[1],
-#             "high": data[2],
-#             "low": data[3], 
-#             "close": data[4],
-#         }
-#         processed_candlesticks.append(candlestick)
-
-#     return jsonify(processed_candlesticks)
-
-# @app.route('/5m_candles')
-# def min5():
-#     candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_5MINUTE, "5 Jan, 2021")
-
-#     processed_candlesticks = []
-
-#     for data in candlesticks:
-#         candlestick = {
-#             "time": data[0] / 1000,
-#             "open": data[1],
-#             "high": data[2],
-#             "low": data[3], 
-#             "close": data[4],
-#         }
-#         processed_candlesticks.append(candlestick)
-
-#     return jsonify(processed_candlesticks)
-
-# @app.route('/15m_candles')
-# def min15():
-#     candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_15MINUTE, "1 Dec, 2020")
-
-#     processed_candlesticks = []
-
-#     for data in candlesticks:
-#         candlestick = {
-#             "time": data[0] / 1000,
-#             "open": data[1],
-#             "high": data[2],
-#             "low": data[3], 
-#             "close": data[4],
-#         }
-#         processed_candlesticks.append(candlestick)
-
-#     return jsonify(processed_candlesticks)
-
-# @app.route('/30m_candles')
-# def min30():
-#     candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_30MINUTE, "1 Jul, 2020")
-
-#     processed_candlesticks = []
-
-#     for data in candlesticks:
-#         candlestick = {
-#             "time": data[0] / 1000,
-#             "open": data[1],
-#             "high": data[2],
-#             "low": data[3], 
-#             "close": data[4],
-#         }
-#         processed_candlesticks.append(candlestick)
-
-#     return jsonify(processed_candlesticks)
-
-# @app.route('/1h_candles')
-# def hour1():
-#     candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_1HOUR, "1 Apr, 2020")
-
-#     processed_candlesticks = []
-
-#     for data in candlesticks:
-#         candlestick = {
-#             "time": data[0] / 1000,
-#             "open": data[1],
-#             "high": data[2],
-#             "low": data[3], 
-#             "close": data[4],
-#         }
-#         processed_candlesticks.append(candlestick)
-
-#     return jsonify(processed_candlesticks)
-
-# @app.route('/2h_candles')
-# def hour2():
-#     candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_2HOUR, "1 Aug, 2019")
-
-#     processed_candlesticks = []
-
-#     for data in candlesticks:
-#         candlestick = {
-#             "time": data[0] / 1000,
-#             "open": data[1],
-#             "high": data[2],
-#             "low": data[3], 
-#             "close": data[4],
-#         }
-#         processed_candlesticks.append(candlestick)
-
-#     return jsonify(processed_candlesticks)
-
-# @app.route('/4h_candles')
-# def hour4():
-#     candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_4HOUR, "1 Apr, 2019")
-
-#     processed_candlesticks = []
-
-#     for data in candlesticks:
-#         candlestick = {
-#             "time": data[0] / 1000,
-#             "open": data[1],
-#             "high": data[2],
-#             "low": data[3], 
-#             "close": data[4],
-#         }
-#         processed_candlesticks.append(candlestick)
-
-#     return jsonify(processed_candlesticks)
-
-# @app.route('/6h_candles')
-# def hour6():
-#     candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_6HOUR, "1 Jan, 2019")
-
-#     processed_candlesticks = []
-
-#     for data in candlesticks:
-#         candlestick = {
-#             "time": data[0] / 1000,
-#             "open": data[1],
-#             "high": data[2],
-#             "low": data[3], 
-#             "close": data[4],
-#         }
-#         processed_candlesticks.append(candlestick)
-
-#     return jsonify(processed_candlesticks)
-
-# @app.route('/8h_candles')
-# def hour8():
-#     candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_8HOUR, "1 Jun, 2018")
-
-#     processed_candlesticks = []
-
-#     for data in candlesticks:
-#         candlestick = {
-#             "time": data[0] / 1000,
-#             "open": data[1],
-#             "high": data[2],
-#             "low": data[3], 
-#             "close": data[4],
-#         }
-#         processed_candlesticks.append(candlestick)
-
-#     return jsonify(processed_candlesticks)
-
-# @app.route('/1d_candles')
-# def day1():
-#     candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_1DAY, "1 Jan, 2017")
-
-#     processed_candlesticks = []
-
-#     for data in candlesticks:
-#         candlestick = {
-#             "time": data[0] / 1000,
-#             "open": data[1],
-#             "high": data[2],
-#             "low": data[3], 
-#             "close": data[4],
-#         }
-#         processed_candlesticks.append(candlestick)
-
-#     return jsonify(processed_candlesticks)
-
-# @app.route('/3d_candles')
-# def day3():
-#     candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_3DAY, "1 Jan, 2017")
-
-#     processed_candlesticks = []
-
-#     for data in candlesticks:
-#         candlestick = {
-#             "time": data[0] / 1000,
-#             "open": data[1],
-#             "high": data[2],
-#             "low": data[3], 
-#             "close": data[4],
-#         }
-#         processed_candlesticks.append(candlestick)
-
-#     return jsonify(processed_candlesticks)
 
 @app.route('/max_buy', methods=['POST'])
 def maximizeBuy():
@@ -634,6 +500,8 @@ def maximizeSell():
     symbol = request.form['sellSymbol']
     limitPrice = request.form['sellPrice']
 
+    # limit sell therefore no fee is calculated
+
     if symbol == "BTCUSDT":
         maxSellAmount = float(floatPrecision(btc_raw_balance, btc_usdt_stepSize))
         # maxSellAmount = floatPrecision((btc_raw_balance - (btc_raw_balance * btc_usdt_fee)), btc_usdt_stepSize) #no longer taker fee
@@ -647,6 +515,20 @@ def maximizeSell():
     return jsonify({'maxSell': maxSellAmount})
      
 
+@app.route('/trade_history', methods=['POST']) 
+def orderHistory():
+    symbol = request.form['symbol']
+    # orders = client.get_all_orders(symbol='BTCEUR', limit=10)
+    trades = client.get_my_trades(symbol='BTCEUR')
+    # print(orders)
+    # print(trades)
+    return jsonify(trades)
+
+@app.route('/open_orders', methods=['POST'])
+def openOrders():
+    orders = client.get_open_orders(symbol='BTCEUR')
+    return jsonify(orders)
+
 @app.route('/favicon.ico') 
 def favicon(): 
-    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.png', mimetype='image/png')
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'bitcoin-blue.png', mimetype='image/png')
