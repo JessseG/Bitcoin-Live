@@ -218,6 +218,34 @@
 //   "isBestMatch": True
 // },
 
+//___________________________________________________________________________________
+
+// $(window).ready(function (event) {
+//   // event.preventDefault();
+//   $.ajax({
+//     url: "/default",
+//     type: "POST",
+//     data: {
+//       symbol: "BTCUSDT",
+//     },
+//     success: function (result) {
+//       result.pop();
+//       candleSeries.setData(result);
+//     },
+//     error: function (result) {
+//       alert("Invalid Input");
+//     },
+//     start_time: new Date().getTime(),
+//     complete: function (data) {
+//       console.log(
+//         "This request took " + (new Date().getTime() - this.start_time) + " ms"
+//       );
+//     },
+//   });
+// });
+
+//___________________________________________________________________________________
+
 function fillTable(data) {
   function isBuyer(value) {
     let side = eval(JSON.stringify(value));

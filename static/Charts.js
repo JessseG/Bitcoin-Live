@@ -84,7 +84,7 @@ candleSeries.applyOptions({
 //   });
 // }
 
-$(document).ready(function (event) {
+$(window).ready(function (event) {
   // event.preventDefault();
   $.ajax({
     url: "/default",
@@ -93,12 +93,17 @@ $(document).ready(function (event) {
       symbol: "BTCUSDT",
     },
     success: function (result) {
-      console.log(result);
       result.pop();
       candleSeries.setData(result);
     },
     error: function (result) {
       alert("Invalid Input");
+    },
+    start_time: new Date().getTime(),
+    complete: function (data) {
+      console.log(
+        "This request took " + (new Date().getTime() - this.start_time) + " ms"
+      );
     },
   });
 });
