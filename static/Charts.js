@@ -76,13 +76,32 @@ candleSeries.applyOptions({
 });
 
 // if (window.location.href === "http://localhost:5000/") {
-fetch("http://localhost:5000/default")
-  .then((r) => r.json())
-  .then((response) => {
-    response.pop();
-    candleSeries.setData(response);
-  });
+// fetch("http://localhost:5000/default")
+//   .then((r) => r.json())
+//   .then((response) => {
+//     response.pop();
+//     candleSeries.setData(response);
+//   });
 // }
+
+$(document).ready(function (event) {
+  // event.preventDefault();
+  $.ajax({
+    url: "/default",
+    type: "POST",
+    data: {
+      symbol: "BTCUSDT",
+    },
+    success: function (result) {
+      console.log(result);
+      result.pop();
+      candleSeries.setData(result);
+    },
+    error: function (result) {
+      alert("Invalid Input");
+    },
+  });
+});
 
 symbols = ["btcusdt", "btceur", "eurusdt"];
 

@@ -192,7 +192,7 @@ def webhook():
                 btc_usdt_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', btc_usdt_info['filters']))[0]['tickSize'])
                 btc_usdt_stepSize = float(list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_usdt_info['filters']))[0]['stepSize'])
                 usdt_raw_balance = float(client.get_asset_balance(asset='USDT')['free'])
-                price = btc_usdt_last_price - 10
+                price = btc_usdt_last_price + 10
                 quantity = float(calculateMaxBuy(price, btc_usdt_tickSize, usdt_raw_balance, btc_usdt_stepSize))
                 order_response = buyLimitOrder(symbol, quantity, price)
 
@@ -201,7 +201,7 @@ def webhook():
                 # btc_usdt_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', btc_usdt_info['filters']))[0]['tickSize'])
                 btc_usdt_stepSize = float(list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_usdt_info['filters']))[0]['stepSize'])
                 btc_raw_balance = float(client.get_asset_balance(asset='BTC')['free'])
-                price = btc_usdt_last_price + 10
+                price = btc_usdt_last_price - 10
                 quantity = float(floatPrecision(btc_raw_balance, btc_usdt_stepSize))
                 # quantity = float(calculateMaxSell(price, btc_usdt_tickSize, usdt_raw_balance, btc_usdt_stepSize))
                 order_response = sellLimitOrder(symbol, quantity, price)
@@ -212,7 +212,7 @@ def webhook():
                 btc_eur_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', btc_eur_info['filters']))[0]['tickSize'])
                 btc_eur_stepSize = float(list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_eur_info['filters']))[0]['stepSize'])
                 eur_raw_balance = float(client.get_asset_balance(asset='EUR')['free'])
-                price = btc_eur_last_price - 10
+                price = btc_eur_last_price + 10
                 quantity = float(calculateMaxBuy(price, btc_eur_tickSize, eur_raw_balance, btc_eur_stepSize))
                 order_response = buyLimitOrder(symbol, quantity, price)
 
@@ -221,7 +221,7 @@ def webhook():
                 # btc_eur_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', btc_eur_info['filters']))[0]['tickSize'])
                 btc_eur_stepSize = float(list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_eur_info['filters']))[0]['stepSize'])
                 btc_raw_balance = float(client.get_asset_balance(asset='BTC')['free'])
-                price = btc_eur_last_price + 10
+                price = btc_eur_last_price - 10
                 quantity = float(floatPrecision(btc_raw_balance, btc_eur_stepSize))
                 print(quantity)
                 # quantity = float(calculateMaxSell(price, btc_eur_tickSize, eur_raw_balance, btc_eur_stepSize))
