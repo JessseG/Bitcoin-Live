@@ -290,7 +290,7 @@ $(document).ready(function (event) {
       fillTable(result);
     },
     error: function (result) {
-      alert("Invalid Input");
+      alert("Invalid Input — Trade History");
     },
   });
 });

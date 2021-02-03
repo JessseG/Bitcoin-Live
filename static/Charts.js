@@ -84,7 +84,7 @@ candleSeries.applyOptions({
 //   });
 // }
 
-$(window).ready(function (event) {
+$(document).ready(function (event) {
   // event.preventDefault();
   $.ajax({
     url: "/default",
@@ -97,7 +97,7 @@ $(window).ready(function (event) {
       candleSeries.setData(result);
     },
     error: function (result) {
-      alert("Invalid Input");
+      alert("Invalid Input — Default Candles");
     },
     start_time: new Date().getTime(),
     complete: function (data) {
