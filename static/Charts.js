@@ -96,8 +96,8 @@ $(document).ready(function (event) {
       result.pop();
       candleSeries.setData(result);
     },
-    error: function (result) {
-      alert("Invalid Input — Default Candles");
+    error: function (result, e) {
+      alert(`Invalid Input — Default Candles --> ${result} ---> ${e}`);
     },
     start_time: new Date().getTime(),
     complete: function (data) {
