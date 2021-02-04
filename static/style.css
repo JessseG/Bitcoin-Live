@@ -294,7 +294,7 @@ select {
 }
 
 .trading-window h2 {
-  margin: 2vh 0 0.4vh 1vw;
+  margin: 2.4vh 0 0.7vh 1vw;
   font-size: 2.9vh;
   display: inline-block;
   color: rgb(255, 255, 255);
@@ -381,7 +381,7 @@ select {
 .input-price-block {
   margin: 0 1vh;
   margin-top: 1vw;
-  margin-bottom: 1vh;
+  /* margin-bottom: 1vh; */
   padding: 0;
   display: block;
   text-align: center;
@@ -391,13 +391,14 @@ select {
   background-color: #767676;
   vertical-align: middle;
   border-radius: 0.4vh;
-  font-size: 1.9vh;
+  font-size: 1.8vh;
   color: #151515;
   font-weight: 530;
-  padding: 0.1vh 0 0.1vh 0.6vw;
+  padding: 0.1vh 0 0.1vh 0.4vw;
   letter-spacing: 0.1vh;
   display: inline-block;
   position: relative;
+  /* border: 0.5px solid red; */
 }
 
 .label-placeholder {
@@ -408,7 +409,7 @@ select {
 
 .input-price {
   font-family: "Open Sans";
-  margin: 0.3vh 0.4vw;
+  margin: 0.2vh 0.4vw;
   outline: none;
   font-size: 1.8vh;
   font-weight: 530;
@@ -450,7 +451,7 @@ select {
 
 .input-amount-block {
   margin: 0 1vh;
-  margin-top: 1vw;
+  margin-top: 0.7vw;
   margin-bottom: 1vh;
   padding: 0;
   display: block;
@@ -461,10 +462,10 @@ select {
   background-color: #767676;
   vertical-align: middle;
   border-radius: 0.4vh;
-  font-size: 1.9vh;
+  font-size: 1.8vh;
   color: #151515;
   font-weight: 530;
-  padding: 0.1vh 0 0.1vh 0.3vw;
+  padding: 0.1vh 0 0.1vh 0.2vw;
   letter-spacing: 0.1vh;
   display: inline-block;
   position: relative;
@@ -472,7 +473,7 @@ select {
 
 .input-amount {
   font-family: "Open Sans";
-  margin: 0.3vh 0.4vw 0.3vh 0vw;
+  margin: 0.2vh 0.4vw 0.2vh 0vw;
   outline: none;
   font-size: 1.8vh;
   font-weight: 530;
