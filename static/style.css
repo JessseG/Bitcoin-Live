@@ -4,6 +4,7 @@ body {
   /* background-color: rgb(36, 36, 36); */
   background-color: rgb(20, 19, 36);
   margin-top: 8.5vh;
+  overflow: hidden;
 }
 
 #page-nav-bar {
@@ -80,7 +81,7 @@ body {
 
 #status-bar {
   /* border: 3px solid red; */
-  margin: 1.4vh;
+  margin: 0.6vh 1.3vh 1.1vh 1.2vh;
 }
 
 #page-trade-symbol {
@@ -144,7 +145,7 @@ select {
 }
 
 #row-1-column-1 {
-  /* width: 100%; */
+  width: 75%;
   /* order: 1; */
   /* border: 1px solid aqua; */
 }
@@ -293,8 +294,8 @@ select {
 }
 
 .trading-window h2 {
-  margin: 2.7vh 0 1vh 1vw;
-  font-size: 3vh;
+  margin: 2vh 0 0.4vh 1vw;
+  font-size: 2.9vh;
   display: inline-block;
   color: rgb(255, 255, 255);
   letter-spacing: 0.1vh;
@@ -531,6 +532,8 @@ select {
 
 .buy-limit-options {
   display: block;
+  /* border: 1px solid red; */
+  margin-bottom: 0;
 }
 
 .fast-price-icon {
@@ -655,7 +658,7 @@ select {
   font-family: "Open Sans";
   display: block;
   margin: auto;
-  margin-top: 1.3vh;
+  margin-top: 1vh;
 }
 
 #submit-buy:hover {
@@ -679,7 +682,7 @@ select {
   font-family: "Open Sans";
   display: block;
   margin: auto;
-  margin-top: 1.3vh;
+  margin-top: 1vh;
 }
 
 #submit-sell:hover {
@@ -734,13 +737,13 @@ h4 {
   display: flex;
   /* flex-wrap: wrap; */
   width: 100%;
-  margin-top: 1.3vh;
+  margin-top: 0;
   /* border: 2px solid red; */
 }
 
 #row-2-column-1 {
   /* border: 1px solid aqua; */
-  width: 74%;
+  width: 75%;
   position: relative;
   /* margin: 1vh; */
 }
@@ -766,22 +769,22 @@ h4 {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   padding: 1.1vh 0.7vh;
-  font-size: 2vh;
+  font-size: 1.8vh;
   font-family: "Open Sans";
   color: rgb(255, 255, 255);
-  background-color: #383838;
+  background-color: #2e2e2e;
 }
 
 #trade-history-table td {
   /* width: 5%; */
-  padding: 1.1vh 0.7vh;
+  padding: 1vh 0.7vh;
   font-family: "Open Sans";
   font-size: 1.6vh;
   font-weight: 495;
   letter-spacing: 1px;
   text-align: center;
   color: white;
-  background-color: #4f4f4f;
+  background-color: #494949;
 }
 
 #row-2-column-2 {
@@ -804,9 +807,9 @@ h4 {
 
 #automation-title {
   color: white;
-  margin: 0.6vh 0 1.5vh 0.7vw;
+  margin: 0.5vh 0 0.9vh 0.7vw;
   display: inline-block;
-  font-size: 3vh;
+  font-size: 2.8vh;
   /* border: 2px solid red; */
 }
 
@@ -824,14 +827,16 @@ h4 {
 
 #automation-body hr {
   width: 90%;
+  /* margin: 0; */
+  /* visibility: hidden; */
 }
 
 /* The switch - the box around the slider */
 .switch {
   position: relative;
   display: inline-block;
-  margin-top: 1.4%;
-  margin-right: 2.1%;
+  margin-top: 2.5%;
+  margin-right: 2.5%;
   width: 3vw;
   height: 3vh;
 }
@@ -994,6 +999,11 @@ input:checked + .slider:before {
   /* font-size: 1.9vh; */
   color: #fafafa;
   letter-spacing: 0.2vw;
+}
+
+#auto-options {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 #select-auto-strategy {

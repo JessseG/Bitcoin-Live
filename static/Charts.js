@@ -1,5 +1,5 @@
-let heightRatio = 0.63;
-let widthRatio = 0.715;
+let heightRatio = 0.55; // 0.63
+let widthRatio = 0.724;
 
 let w = window.innerWidth * widthRatio; //1060 - bigger
 let h = window.innerHeight * heightRatio; //537 - smaller

@@ -186,7 +186,7 @@
                 title="Generates last price"
               />
             </div>
-            <hr />
+            <!-- <hr /> -->
             <input type="submit" name="buy" value="Buy" id="submit-buy" />
           </form>
         </div>
@@ -262,7 +262,7 @@
                 title="Generates last price"
               />
             </div>
-            <hr />
+            <!-- <hr /> -->
             <input type="submit" name="sell" value="Sell" id="submit-sell" />
           </form>
         </div>
@@ -315,24 +315,26 @@
               </div>
             </div>
             <!-- ———————————————————————————————————————————————————————————— -->
-            <select name="select-auto-symbol" id="select-auto-symbol">
-              <option value="BTCUSDT">BTC&#8239;/&#8239;USDT</option>
-              <option value="BTCEUR">BTC&#8239;/&#8239;EUR</option>
-              <option value="EURUSDT">EUR&#8239;/&#8239;USDT</option>
-            </select>
-            <select name="select-auto-strategy" id="select-auto-strategy">
-              <option value="MACD">MACD</option>
-              <option value="RSI">RSI</option>
-              <option value="STOCH">STOCH</option>
-            </select>
-            <select name="select-auto-candles" id="select-auto-candles">
-              <option value="5m">5m</option>
-              <option value="15m">15m</option>
-              <option value="30m">30m</option>
-              <option value="1H">1H</option>
-              <option value="2H">2H</option>
-            </select>
-            <button id="maximize-auto-trade" type="button">Max</button>
+            <div id="auto-options">
+              <select name="select-auto-symbol" id="select-auto-symbol">
+                <option value="BTCUSDT">BTC&#8239;/&#8239;USDT</option>
+                <option value="BTCEUR">BTC&#8239;/&#8239;EUR</option>
+                <option value="EURUSDT">EUR&#8239;/&#8239;USDT</option>
+              </select>
+              <select name="select-auto-strategy" id="select-auto-strategy">
+                <option value="MACD">MACD</option>
+                <option value="RSI">RSI</option>
+                <option value="STOCH">STOCH</option>
+              </select>
+              <select name="select-auto-candles" id="select-auto-candles">
+                <option value="5m">5m</option>
+                <option value="15m">15m</option>
+                <option value="30m">30m</option>
+                <option value="1H">1H</option>
+                <option value="2H">2H</option>
+              </select>
+              <button id="maximize-auto-trade" type="button">Max</button>
+            </div>
             <hr />
             <input
               type="submit"
