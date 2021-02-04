@@ -145,7 +145,7 @@ select {
 }
 
 #row-1-column-1 {
-  width: 75%;
+  width: 72.5%;
   /* order: 1; */
   /* border: 1px solid aqua; */
 }
@@ -744,7 +744,7 @@ h4 {
 
 #row-2-column-1 {
   /* border: 1px solid aqua; */
-  width: 75%;
+  width: 72.5%;
   position: relative;
   /* margin: 1vh; */
 }
