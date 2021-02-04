@@ -1,6 +1,27 @@
+let heightRatio = 0.63;
+let widthRatio = 0.715;
+
+let w = window.innerWidth * widthRatio; //1060 - bigger
+let h = window.innerHeight * heightRatio; //537 - smaller
+
+console.log(window.innerWidth);
+console.log(window.innerHeight);
+console.log();
+
+function reportWindowSize() {
+  // heightOutput.textContent = window.innerHeight;
+  // widthOutput.textContent = window.innerWidth;
+  console.log(window.innerWidth);
+  console.log(window.innerHeight);
+  chart.resize(
+    window.innerWidth * widthRatio,
+    window.innerHeight * heightRatio
+  );
+}
+
 var chart = LightweightCharts.createChart(document.getElementById("charts"), {
-  width: 1060,
-  height: 537,
+  width: w,
+  height: h,
   layout: {
     backgroundColor: "#161616",
     textColor: "rgba(255, 255, 255, 0.9)",
@@ -58,6 +79,8 @@ var chart = LightweightCharts.createChart(document.getElementById("charts"), {
   },
 });
 
+// let container = document.getElementById("charts");
+
 var candleSeries = chart.addCandlestickSeries({
   upColor: "#5fffff",
   downColor: "#ff3b3b",
@@ -74,6 +97,32 @@ candleSeries.applyOptions({
     minMove: 1,
   },
 });
+
+// function resize() {
+//   chart.applyOptions({
+//     width: $("#charts").width(),
+//     height: $("#charts").height(),
+//   });
+// }
+
+// new ResizeObserver(outputsize).observe($("#charts"));
+
+//_____________________________________________________________________
+
+// $(window).resize(function () {
+//   if (this.resizeTO) clearTimeout(this.resizeTO);
+//   this.resizeTO = setTimeout(function () {
+//     $(this).trigger("resizeEnd");
+//   }, 0);
+// });
+
+// $(window).bind("resizeEnd", function () {
+//   $("#width").text($(this).width());
+//   $("#height").text($(this).height());
+// });
+//_____________________________________________________________________
+
+window.addEventListener("resize", reportWindowSize);
 
 // if (window.location.href === "http://localhost:5000/") {
 // fetch("http://localhost:5000/default")

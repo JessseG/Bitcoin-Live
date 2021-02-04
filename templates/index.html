@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <!-- <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script> -->
     <!-- <script type="text/javascript" src="../data/candleData.json"></script> -->
     <link rel="stylesheet" href="../static/style.css" />
     <title>Coinview</title>
@@ -16,8 +16,10 @@
       <li id="options">
         <img src="../static/options-icon.svg" id="options-icon" />
       </li>
-      <li><h2 id="header-title">Bitcoin LIVE</h2></li>
-      <li><a href="#home">Home</a></li>
+      <li style="cursor: pointer" a href="">
+        <h2 id="header-title">Bitcoin LIVE</h2>
+      </li>
+      <li><a href="">Home</a></li>
       <li><a href="#buy">Buy</a></li>
       <li><a href="#sell">Sell</a></li>
     </ul>
@@ -41,55 +43,57 @@
     </div>
     <div class="row-1">
       <div class="column" id="row-1-column-1">
-        <ul id="chart-nav-bar">
-          <li><label id="time-label">Time</label></li>
-          <li>
-            <select
-              name="minute-candles"
-              class="select-candle-size"
-              id="select-minute-candles"
-            >
-              <option value="" selected disabled hidden>m</option>
-              <option value="1m" id="1m">1m</option>
-              <option value="3m" id="3m">3m</option>
-              <option value="5m" id="5m">5m</option>
-              <option value="15m" id="15m">15m</option>
-              <option value="30m" id="30m">30m</option>
-            </select>
-          </li>
-          <li>
-            <select
-              name="hour-candles"
-              class="select-candle-size"
-              id="select-hour-candles"
-            >
-              <option value="" selected disabled hidden>H</option>
-              <option value="1h" id="1H">1H</option>
-              <option value="2h" id="2H">2H</option>
-              <option value="4h" id="4H" selected>4H</option>
-              <option value="6h" id="6H">6H</option>
-              <option value="8h" id="8H">8H</option>
-            </select>
-          </li>
-          <li>
-            <select
-              name="day-candles"
-              class="select-candle-size"
-              id="select-day-candles"
-            >
-              <option value="" selected disabled hidden>D</option>
-              <option value="1d" id="1D">1D</option>
-              <option value="3d" id="3D">3D</option>
-            </select>
-          </li>
-          <!-- <li>
+        <div id="chart-container">
+          <ul id="chart-nav-bar">
+            <li><label id="time-label">Time</label></li>
+            <li>
+              <select
+                name="minute-candles"
+                class="select-candle-size"
+                id="select-minute-candles"
+              >
+                <option value="" selected disabled hidden>m</option>
+                <option value="1m" id="1m">1m</option>
+                <option value="3m" id="3m">3m</option>
+                <option value="5m" id="5m">5m</option>
+                <option value="15m" id="15m">15m</option>
+                <option value="30m" id="30m">30m</option>
+              </select>
+            </li>
+            <li>
+              <select
+                name="hour-candles"
+                class="select-candle-size"
+                id="select-hour-candles"
+              >
+                <option value="" selected disabled hidden>H</option>
+                <option value="1h" id="1H">1H</option>
+                <option value="2h" id="2H">2H</option>
+                <option value="4h" id="4H" selected>4H</option>
+                <option value="6h" id="6H">6H</option>
+                <option value="8h" id="8H">8H</option>
+              </select>
+            </li>
+            <li>
+              <select
+                name="day-candles"
+                class="select-candle-size"
+                id="select-day-candles"
+              >
+                <option value="" selected disabled hidden>D</option>
+                <option value="1d" id="1D">1D</option>
+                <option value="3d" id="3D">3D</option>
+              </select>
+            </li>
+            <!-- <li>
+              <img src="../static/last.svg" id="reset-chart-icon" />
+              <img src="../static/circle-right.svg" id="reset-chart-icon" />
+            </li> -->
+          </ul>
+          <div id="charts">
             <img src="../static/last.svg" id="reset-chart-icon" />
-            <img src="../static/circle-right.svg" id="reset-chart-icon" />
-          </li> -->
-        </ul>
-        <div id="charts">
-          <img src="../static/last.svg" id="reset-chart-icon" />
-          <!-- <img src="../static/circle-right.svg" id="reset-chart-icon" /> -->
+            <!-- <img src="../static/circle-right.svg" id="reset-chart-icon" /> -->
+          </div>
         </div>
         <!-- <button type="button" id="reset-chart">>></button> -->
         <div id="trades"></div>
@@ -114,7 +118,6 @@
               {% for message in messages %} {{ message }} {% endfor %}
             </div>
             {% endif %} {% endwith %}
-            <!-- <label class="input-label"><h4>Price</h4></label> -->
             <div class="input-price-block">
               <div class="input-price-box" id="buy-limit-price-box">
                 <span class="label-placeholder">Price</span>
@@ -137,8 +140,6 @@
                 −
               </button>
             </span> -->
-            <!-- <hr /> -->
-            <!-- <label class="input-label"><h4>Amount</h4></label> -->
             <div class="input-amount-block">
               <div class="input-amount-box">
                 <span class="label-placeholder">Amount</span>
@@ -151,7 +152,7 @@
                 <span class="asset-placeholder">BTC</span>
               </div>
             </div>
-              <!-- <img src="../static/last-price-2.png" class="fast-price-icon" />
+            <!-- <img src="../static/last-price-2.png" class="fast-price-icon" />
               <img
                 src="../static/graph-icon.png"
                 class="fast-price-icon"
@@ -167,40 +168,25 @@
                 class="fast-price-icon"
                 style="border-radius: 0.4vh"
               /> -->
-              <div class="buy-limit-options">
-                <input
-                  type="range"
-                  min="1"
-                  max="100"
-                  step="1"
-                  class="slider2"
-                  id="buy-limit-percent"
-                  name="buy-limit-percent"
-                />
-                <button id="maximize-buy" type="button">Max</button>
-                <img
-                    src="../static/battery-bolt.png"
-                    class="fast-price-icon"
-                    id="buy-limit-fast-price"
-                    title="Generates last price"
-                  />
-            </div>
-            <!-- <div class="buy-limit-options"> -->
-              <!-- <input type="password" name="passcode-buy" class="passcode" placeholder="code"/>
+            <div class="buy-limit-options">
+              <input
+                type="range"
+                min="1"
+                max="100"
+                step="1"
+                class="slider2"
+                id="buy-limit-percent"
+                name="buy-limit-percent"
+              />
               <button id="maximize-buy" type="button">Max</button>
               <img
                 src="../static/battery-bolt.png"
                 class="fast-price-icon"
-                style="border-radius: 0.4vh"
-              /> -->
-              <!-- <img src="../static/fast-price.png" class="fast-price-icon" /> -->
-            <!-- <input type="password" name="passcode" id="passcode" /> -->
+                id="buy-limit-fast-price"
+                title="Generates last price"
+              />
+            </div>
             <hr />
-            <!-- <select name="symbol" id="symbol">
-          {% for symbol in symbols %}
-          <option>{{ symbol }}</option>
-          {% endfor %}
-          </select> -->
             <input type="submit" name="buy" value="Buy" id="submit-buy" />
           </form>
         </div>
@@ -218,7 +204,6 @@
               <option value="EURUSDT">EUR/USDT</option>
             </select>
             <input type="password" name="passcode-sell" class="passcode" />
-            <!-- <label class="input-label"><h4>Price</h4></label> -->
             <div class="input-price-block">
               <div class="input-price-box">
                 <span class="label-placeholder">Price</span>
@@ -246,10 +231,8 @@
                 −
               </button>
             </span> -->
-            <!-- <hr /> -->
             <div class="input-amount-block">
               <div class="input-amount-box">
-            <!-- <label class="input-label"><h4>Amount</h4></label> -->
                 <span class="label-placeholder">Amount</span>
                 <input
                   class="input-amount"
@@ -262,37 +245,24 @@
               </div>
             </div>
             <div class="buy-limit-options">
-                <input
-                  type="range"
-                  min="1"
-                  max="100"
-                  step="1"
-                  class="slider2"
-                  id="sell-limit-percent"
-                  name="sell-limit-percent"
-                />
-                <button id="maximize-sell" type="button">Max</button>
-                <img
-                    src="../static/battery-bolt.png"
-                    class="fast-price-icon"
-                    id="sell-limit-fast-price"
-                    title="Generates last price"
-                  />
+              <input
+                type="range"
+                min="1"
+                max="100"
+                step="1"
+                class="slider2"
+                id="sell-limit-percent"
+                name="sell-limit-percent"
+              />
+              <button id="maximize-sell" type="button">Max</button>
+              <img
+                src="../static/battery-bolt.png"
+                class="fast-price-icon"
+                id="sell-limit-fast-price"
+                title="Generates last price"
+              />
             </div>
             <hr />
-            <!-- <div class="input-amount-block">
-              <div class="input-amount-box">
-                <span class="label-placeholder">Total</span>
-                <input
-                  class="input-amount"
-                  type="text"
-                  id="sell-limit-quantity"
-                  name="sell-limit-quantity"
-                  placeholder="BTC"
-                />
-                <span class="asset-placeholder">BTC</span>
-              </div>
-            </div> -->
             <input type="submit" name="sell" value="Sell" id="submit-sell" />
           </form>
         </div>
@@ -324,16 +294,27 @@
             </label>
           </div>
           <div id="automation-body">
-            <!-- <h4>Amount</h4> -->
-            <input
+            <!-- <input
               class="input-auto-quantity"
               type="text"
               id="auto-trade-quantity"
               name="auto-trade-quantity"
               placeholder="BTC"
             />
-            <button id="maximize-auto-trade" type="button">Max</button>
-            <br />
+            ———————————————————————————————————————————————————————————— -->
+            <div class="input-amount-block">
+              <div class="input-amount-box">
+                <span class="label-placeholder">Amount</span>
+                <input
+                  class="input-amount"
+                  type="text"
+                  id="auto-trade-quantity"
+                  name="auto-trade-quantity"
+                />
+                <span class="asset-placeholder">BTC</span>
+              </div>
+            </div>
+            <!-- ———————————————————————————————————————————————————————————— -->
             <select name="select-auto-symbol" id="select-auto-symbol">
               <option value="BTCUSDT">BTC&#8239;/&#8239;USDT</option>
               <option value="BTCEUR">BTC&#8239;/&#8239;EUR</option>
@@ -351,14 +332,7 @@
               <option value="1H">1H</option>
               <option value="2H">2H</option>
             </select>
-            <!-- <input
-              type="range"
-              name="trade-percentage"
-              id="trade-percentage"
-              min="1"
-              max="100"
-              step="1"
-            /> -->
+            <button id="maximize-auto-trade" type="button">Max</button>
             <hr />
             <input
               type="submit"
@@ -371,7 +345,7 @@
       </div>
     </div>
 
-    <h2 style="color: white">Tasks</h2>
+    <!-- <h2 style="color: white">Tasks</h2>
     <h4 style="color: rgb(166, 0, 207); letter-spacing: 1px">
       <p>
         - 4h switching error> 4h is defualt now <br />
@@ -408,31 +382,32 @@
     <h3>BTC/EUR StepSize: {{ btc_eur_stepSize }}</h3>
 
     <hr />
-
-    <h3 style="color: white">Last price: --> get_all_tickers()</h3>
-    <h3>Price: {{ btc_usdt_price }}</h3>
+ -->
+    <!-- <h3 style="color: white">Last price: get_all_tickers()</h3> -->
+    <!-- <h3>Price: {{ btc_usdt_price }}</h3>
 
     <hr />
 
     <h3 style="color: white">get_symbol_info()</h3>
     <h3>{{ btc_usdt_info }}</h3>
-    <h3>{{ btc_eur_info }}</h3>
+    <h3>{{ btc_eur_info }}</h3> -->
 
-    <div id="my_balances">
-      <h2>Balances</h2>
+    <!-- _____________________________________________________________ -->
+    <!-- <div id="my_balances">
+      <h2 style="color: white">Balances</h2>
 
       <table id="balance-table">
         {% for balance in my_balances %}
-        <!-- <h3>{{ balance }}</h3> -->
         <tr>
           <td id="asset">{{ balance['asset'] }}</td>
           <td id="value">{{ balance['free'] }}</td>
         </tr>
         {% endfor %}
       </table>
-    </div>
+    </div> -->
+    <!-- _____________________________________________________________ -->
 
-    <h3>Settings</h3>
+    <!-- <h3>Settings</h3>
     <div id="settings">
       <label>RSI</label>
       <input type="checkbox" />
@@ -451,7 +426,7 @@
         id="rsi_oversold"
         placeholder="30"
       />
-    </div>
+    </div> -->
 
     <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>

@@ -181,6 +181,7 @@
 //   </table>
 // );
 
+// ORDERS
 // {
 //     "symbol": "BTCEUR",
 //     "orderId": 297659224,
@@ -202,6 +203,7 @@
 //     "origQuoteOrderQty": "0.00000000"
 //   },
 
+// TRADES
 // {
 //   "symbol": "BTCEUR",
 //   "id": 8299412,
@@ -259,7 +261,7 @@ function fillTable(data) {
 
   //Add items to shopping table
   let trades_table = document.getElementById("trade-history-table");
-  for (let i = data.length - 1; i > data.length - 5; i--) {
+  for (let i = data.length - 1; i > data.length - 6; i--) {
     trades_table.innerHTML +=
       "<tr><td>" +
       data[i].symbol +
