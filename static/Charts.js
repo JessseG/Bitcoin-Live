@@ -1,5 +1,5 @@
 let heightRatio = 0.55; // 0.63
-let widthRatio = 0.71;
+let widthRatio = 0.733; // 0.71 works on heroku with a row-1-column-1 & row-2-column-1 width: 72.5% CSS
 
 let w = window.innerWidth * widthRatio; //1060 - bigger
 let h = window.innerHeight * heightRatio; //537 - smaller

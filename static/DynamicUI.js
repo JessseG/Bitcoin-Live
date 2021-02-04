@@ -261,7 +261,7 @@ function fillTable(data) {
 
   //Add items to shopping table
   let trades_table = document.getElementById("trade-history-table");
-  for (let i = data.length - 1; i > data.length - 6; i--) {
+  for (let i = data.length - 1; i > data.length - 5; i--) {
     trades_table.innerHTML +=
       "<tr><td>" +
       data[i].symbol +
@@ -277,6 +277,10 @@ function fillTable(data) {
       parseFloat(data[i].quoteQty).toFixed(2) +
       "</td></tr>";
   }
+  // let row1 = document.querySelectorAll(
+  //   "#trade-history-table tr:first-of-type td"
+  // );
+  // $(row1).css("padding-top", "2vh");
 }
 
 $(document).ready(function (event) {

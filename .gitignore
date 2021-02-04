@@ -6,3 +6,4 @@ deletedPython.txt
 automation/
 data/
 .vscode/
+__pycache__/
