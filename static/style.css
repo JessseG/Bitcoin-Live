@@ -280,8 +280,8 @@ select {
   position: absolute;
   color: official;
   display: block;
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   z-index: 400;
   cursor: pointer;
   bottom: 50%;
@@ -289,17 +289,17 @@ select {
   opacity: 70%;
 }
 .lds-spinner div {
-  transform-origin: 20px 20px;
+  transform-origin: 16px 16px;
   animation: lds-spinner 1.2s linear infinite;
 }
 .lds-spinner div:after {
   content: " ";
   display: block;
   position: absolute;
-  top: 3px;
-  left: 36px;
-  width: 3.3px;
-  height: 16px;
+  top: 2.3px;
+  left: 25px;
+  width: 2.8px;
+  height: 11px;
   border-radius: 20%;
   background: rgb(180, 230, 255);
 }
