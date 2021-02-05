@@ -145,7 +145,7 @@ $(document).ready(function (event) {
       result.pop();
       candleSeries.setData(result);
     },
-    timeout: 3000,
+    timeout: 10000,
     error: function (result, e) {
       alert(`Invalid Input — Default Candles --> ${result} ---> ${e}`);
     },
