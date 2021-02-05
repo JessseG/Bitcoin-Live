@@ -133,6 +133,8 @@ window.addEventListener("resize", reportWindowSize);
 //   });
 // }
 
+let loader = document.querySelector(".lds-spinner");
+
 $(document).ready(function (event) {
   // event.preventDefault();
   $.ajax({
@@ -144,6 +146,7 @@ $(document).ready(function (event) {
     success: function (result) {
       result.pop();
       candleSeries.setData(result);
+      loader.style = "display: none;";
       socket.addEventListener("message", updateCandles);
     },
     timeout: 20000,
@@ -151,7 +154,8 @@ $(document).ready(function (event) {
       if (textstatus === "timeout") {
         alert("got timeout");
       } else {
-        location.reload();
+        $.ajax(this);
+        // location.reload();
         // alert("Error Loading Chart Please Reload");
       }
     },
