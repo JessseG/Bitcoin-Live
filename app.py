@@ -426,10 +426,7 @@ def settings():
 
 @app.route('/default', methods=['POST'])
 def default():
-    candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_4HOUR, "1 Dec, 2019")
-    # candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_2HOUR, "1 Aug, 2019")
-    # candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_15MINUTE, "1 Dec, 2020")
-    # candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_5MINUTE, "1 Jan, 2021")
+    candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_4HOUR, "1 Apr, 2019")
 
     processed_candlesticks = []
 

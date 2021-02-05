@@ -145,14 +145,14 @@ $(document).ready(function (event) {
       result.pop();
       candleSeries.setData(result);
       socket.addEventListener("message", updateCandles);
-      priceSocket.addEventListener("message", updatePriceTicker);
     },
     timeout: 20000,
     error: function (xmlhttprequest, textstatus, message) {
       if (textstatus === "timeout") {
         alert("got timeout");
       } else {
-        alert(`ALERT: ${textstatus}`);
+        location.reload();
+        // alert("Error Loading Chart Please Reload");
       }
     },
     start_time: new Date().getTime(),
@@ -272,6 +272,10 @@ lastPriceSL.onclick = function () {
   // price -= 10;
   sellLimitPrice.value = Math.floor(price + 5);
   console.log(sellLimitPrice.value);
+};
+
+window.onload = function () {
+  priceSocket.addEventListener("message", updatePriceTicker);
 };
 
 // Partyle determines default candlestick size
