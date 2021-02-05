@@ -144,13 +144,14 @@ $(document).ready(function (event) {
     success: function (result) {
       result.pop();
       candleSeries.setData(result);
+      socket.addEventListener("message", updateCandles);
     },
     timeout: 20000,
     error: function (xmlhttprequest, textstatus, message) {
       if (textstatus === "timeout") {
         alert("got timeout");
       } else {
-        alert(textstatus);
+        alert(`ALERT: ${textstatus}`);
       }
     },
     start_time: new Date().getTime(),
@@ -296,7 +297,7 @@ function updateCandles(e) {
   });
 }
 // console.log(socket);
-socket.addEventListener("message", updateCandles);
+// socket.addEventListener("message", updateCandles);
 
 document.getElementById("reset-chart-icon").onclick = function (event) {
   chart.timeScale().scrollToRealTime(3);
