@@ -25,7 +25,7 @@ var chart = LightweightCharts.createChart(document.getElementById("charts"), {
   layout: {
     backgroundColor: "#161616",
     textColor: "rgba(255, 255, 255, 0.9)",
-    fontSize: 15,
+    fontSize: 14.2,
     fontFamily: "Ubuntu",
     // backgroundColor: "#FAEBD7",
     // textColor: "#696969",
