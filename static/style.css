@@ -296,10 +296,10 @@ select {
   content: " ";
   display: block;
   position: absolute;
-  top: 2.3px;
-  left: 26px;
-  width: 2.4px;
-  height: 10.7px;
+  top: 2px;
+  left: 24px;
+  width: 2.2px;
+  height: 9.8px;
   border-radius: 20%;
   background: rgb(180, 230, 255);
 }
