@@ -259,7 +259,7 @@ select {
   z-index: 400;
   cursor: pointer;
   position: absolute;
-  bottom: 7.4%;
+  bottom: 7.9%;
   right: 7.6%;
   opacity: 70%;
 }
@@ -280,8 +280,8 @@ select {
   position: absolute;
   color: official;
   display: block;
-  width: 4.2vh;
-  height: 4.2vh;
+  width: 3.8vh;
+  height: 3.8vh;
   z-index: 400;
   cursor: pointer;
   bottom: 50%;

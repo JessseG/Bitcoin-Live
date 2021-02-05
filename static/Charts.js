@@ -149,7 +149,7 @@ $(document).ready(function (event) {
       loader.style = "display: none;";
       socket.addEventListener("message", updateCandles);
     },
-    timeout: 20000,
+    timeout: 33000,
     error: function (xmlhttprequest, textstatus, message) {
       if (textstatus === "timeout") {
         alert("got timeout");
