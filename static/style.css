@@ -119,12 +119,36 @@ select {
 
 #real-time-price {
   border-left: 0.3vh solid rgb(114, 114, 114);
-  padding: 0.5vh;
-  padding-left: 4vh;
-  padding-bottom: 0.7vh;
+  padding: 0 0 0.7vh 4vh;
   margin-left: 2.6vh;
   font-size: 2.2vh;
   color: white;
+}
+
+.status-indicator {
+  color: white;
+  font-size: larger;
+  margin: 0 0.2vw;
+  letter-spacing: 0.2px;
+}
+
+.status-label {
+  color: white;
+  margin: 0 0.5vh 0 0.7vh;
+  font-size: 1.9vh;
+  letter-spacing: 0.5px;
+  /* border-left: 0.3vh solid rgb(114, 114, 114); */
+  /* border-right: 0.3vh solid rgb(114, 114, 114); */
+  padding: 0.4vh 0vh 0.4vh 2vh;
+}
+
+#real-time-24h-change {
+  font-size: 2.5vh;
+  color: white;
+  border-left: 0.3vh solid rgb(114, 114, 114);
+  padding: 0;
+  /* padding: 0.5vh 0; */
+  /* margin-left: 1vh; */
 }
 
 #page-trade-symbol h3 {
@@ -259,8 +283,8 @@ select {
   z-index: 400;
   cursor: pointer;
   position: absolute;
-  bottom: 7.9%;
-  right: 7.6%;
+  bottom: 9.8%;
+  right: 7.4%;
   opacity: 70%;
 }
 

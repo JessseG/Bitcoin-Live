@@ -1,12 +1,171 @@
+symbols = ["btcusdt", "btceur", "eurusdt"];
+
+// Sockets for real-time ticker
+for (let i = 0; i < symbols.length; i++) {
+  eval(
+    `var priceSocket_${symbols[i]} = new WebSocket("wss://stream.binance.com:9443/ws/${symbols[i]}@ticker");`
+  );
+}
+
+var priceSocket = priceSocket_btcusdt;
+var prevPrice;
+var newPrice;
+
+var priceIndicator = document.getElementById("real-time-price");
+var percentChange24Hour = document.getElementById("real-24h-change");
+var high24Hour = document.getElementById("real-24h-high");
+var low24Hour = document.getElementById("real-24h-low");
+var base24HourVolume = document.getElementById("real-24h-base-volume");
+var quote24HourVolume = document.getElementById("real-24h-quote-volume");
+
+function updatePriceTicker(event) {
+  var message = JSON.parse(event.data);
+  // console.log(message.c);
+  let symbol = document.getElementById("select-trade").value;
+  let sign;
+
+  if (symbol === "BTCUSDT") {
+    newPrice = parseFloat(message.c).toFixed(2);
+    sign = "$";
+  } else if (symbol === "BTCEUR") {
+    newPrice = parseFloat(message.c).toFixed(2);
+    sign = "€";
+  } else if (symbol === "EURUSDT") {
+    newPrice = parseFloat(message.c).toFixed(4);
+    sign = "$";
+  }
+
+  // PRICE BAR ____________________________________
+
+  if (newPrice > prevPrice) {
+    if (symbol === "EURUSDT") priceIndicator.innerText = `${sign} ${newPrice}`;
+    else {
+      priceIndicator.innerText = `${sign} ${newPrice
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+    }
+    priceIndicator.style = "color: rgb(0, 190, 10);"; // green
+  } else if (newPrice < prevPrice) {
+    if (symbol === "EURUSDT") priceIndicator.innerText = `${sign} ${newPrice}`;
+    else {
+      priceIndicator.innerText = `${sign} ${newPrice
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+    }
+    priceIndicator.style = "color: #ff3b3b;"; // red
+  } else if (newPrice === prevPrice) {
+    if (symbol === "EURUSDT") priceIndicator.innerText = `${sign} ${newPrice}`;
+    else {
+      priceIndicator.innerText = `${sign} ${newPrice
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+    }
+    priceIndicator.style = "color: white;";
+  }
+
+  prevPrice = newPrice;
+  let percentChanged = parseFloat(message.P).toFixed(2);
+
+  if (parseFloat(message.P) > 0) {
+    percentChange24Hour.innerText = `+ ${percentChanged}%`;
+    percentChange24Hour.style = "color: rgb(0, 190, 10); font-size: 2vh;"; // green
+  } else if (parseFloat(message.P) < 0) {
+    percentChange24Hour.innerText = `– &#8239;${percentChanged}%`;
+    percentChange24Hour.style = "color: #ff3b3b; font-size: 2vh;"; // red
+  } else if (parseFloat(message.P) === 0) {
+    percentChange24Hour.innerText = `${percentChanged}%`;
+    percentChange24Hour.style = "color: white; font-size: 2vh;";
+  }
+
+  let lowPrice24Hour;
+  let highPrice24Hour;
+
+  if (symbol === "EURUSDT") {
+    lowPrice24Hour = parseFloat(message.l);
+    highPrice24Hour = parseFloat(message.h);
+  } else {
+    lowPrice24Hour = Math.floor(parseFloat(message.l))
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    highPrice24Hour = Math.floor(parseFloat(message.h))
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  high24Hour.innerText = `${sign} ${highPrice24Hour}`;
+  high24Hour.style = "color: rgb(69, 196, 255); font-size: 2vh;"; // light-blue
+
+  low24Hour.innerText = `${sign} ${lowPrice24Hour}`;
+  low24Hour.style = "color: rgb(69, 196, 255); font-size: 2vh;"; // light-blue
+
+  let base24HourVol = Math.floor(parseFloat(message.v))
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  let baseAsset = symbol.substring(0, 3);
+  let quoteAsset = symbol.substring(3);
+  // console.log(quoteAsset);
+
+  base24HourVolume.innerText = `${base24HourVol} ${baseAsset}`;
+  base24HourVolume.style = "color: rgb(255, 224, 51); font-size: 2vh;"; // gold
+
+  function convertNumber(num) {
+    let modNum = "";
+    if (num >= 1e9) {
+      modNum = (num / 1e9).toFixed(2).toString() + " Billion";
+    } else if (num >= 1e6 && num < 1e9) {
+      modNum = (num / 1e6).toFixed(2).toString() + " Million";
+    }
+
+    return modNum;
+  }
+
+  let quote24HourVol = convertNumber(Math.floor(parseFloat(message.q)));
+  if (quoteAsset === "USDT") {
+    quote24HourVolume.innerText = `$ ${quote24HourVol}`;
+    quote24HourVolume.style = "color: rgb(0, 190, 10); font-size: 2vh;"; // gold
+  } else if (quoteAsset === "EUR") {
+    quote24HourVolume.innerText = `€ ${quote24HourVol}`;
+    quote24HourVolume.style = "color: rgb(69, 196, 255); font-size: 2vh;"; // gold
+  } else {
+    quote24HourVolume.innerText = `${quote24HourVol} ${quoteAsset}`;
+    quote24HourVolume.style = "color: rgb(255, 224, 51); font-size: 2vh;"; // gold
+  }
+}
+
+// FAST PRICE ______________________________________
+
+var lastPriceBL = document.getElementById("buy-limit-fast-price");
+var lastPriceSL = document.getElementById("sell-limit-fast-price");
+
+lastPriceBL.onclick = function () {
+  price = parseFloat(newPrice);
+  // price -= 10;
+  buyLimitPrice.value = Math.floor(price - 5);
+  console.log(buyLimitPrice.value);
+};
+
+lastPriceSL.onclick = function () {
+  price = parseFloat(newPrice);
+  // price -= 10;
+  sellLimitPrice.value = Math.floor(price + 5);
+  console.log(sellLimitPrice.value);
+};
+
+window.onload = function () {
+  priceSocket.addEventListener("message", updatePriceTicker);
+};
+
+//________________________________________________________________________________________________________
+
 let heightRatio = 0.55; // 0.63
 let widthRatio = 0.733; // 0.71 works on heroku with a row-1-column-1 & row-2-column-1 width: 72.5% CSS
 
 let w = window.innerWidth * widthRatio; //1060 - bigger
 let h = window.innerHeight * heightRatio; //537 - smaller
 
-console.log(window.innerWidth);
-console.log(window.innerHeight);
-console.log();
+// console.log(window.innerWidth);
+// console.log(window.innerHeight);
+// console.log();
 
 function reportWindowSize() {
   // heightOutput.textContent = window.innerHeight;
@@ -161,14 +320,12 @@ $(document).ready(function (event) {
     },
     start_time: new Date().getTime(),
     complete: function (data) {
-      console.log(
-        "This request took " + (new Date().getTime() - this.start_time) + " ms"
-      );
+      // console.log(
+      //   "This request took " + (new Date().getTime() - this.start_time) + " ms"
+      // );
     },
   });
 });
-
-symbols = ["btcusdt", "btceur", "eurusdt"];
 
 candles = [
   "1m",
@@ -195,92 +352,6 @@ for (let i = 0; i < symbols.length; i++) {
     );
   }
 }
-
-// Sockets for real-time ticker
-for (let i = 0; i < symbols.length; i++) {
-  eval(
-    `var priceSocket_${symbols[i]} = new WebSocket("wss://stream.binance.com:9443/ws/${symbols[i]}@ticker");`
-  );
-}
-
-var priceSocket = priceSocket_btcusdt;
-
-var prevPrice;
-
-var priceIndicator = document.getElementById("real-time-price");
-
-var newPrice;
-
-function updatePriceTicker(event) {
-  var message = JSON.parse(event.data);
-  // console.log(message.c);
-  let symbol = document.getElementById("select-trade").value;
-  let sign;
-
-  if (symbol === "BTCUSDT") {
-    newPrice = parseFloat(message.c).toFixed(2);
-    sign = "$";
-  } else if (symbol === "BTCEUR") {
-    newPrice = parseFloat(message.c).toFixed(2);
-    sign = "€";
-  } else if (symbol === "EURUSDT") {
-    newPrice = parseFloat(message.c).toFixed(4);
-    sign = "$";
-  }
-
-  // PRICE BAR ____________________________________
-
-  if (newPrice > prevPrice) {
-    if (symbol === "EURUSDT") priceIndicator.innerText = `${sign} ${newPrice}`;
-    else {
-      priceIndicator.innerText = `${sign} ${newPrice
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
-    }
-    priceIndicator.style = "color: rgb(0, 190, 10);";
-  } else if (newPrice < prevPrice) {
-    if (symbol === "EURUSDT") priceIndicator.innerText = `${sign} ${newPrice}`;
-    else {
-      priceIndicator.innerText = `${sign} ${newPrice
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
-    }
-    priceIndicator.style = "color: #ff3b3b;";
-  } else if (newPrice === prevPrice) {
-    if (symbol === "EURUSDT") priceIndicator.innerText = `${sign} ${newPrice}`;
-    else {
-      priceIndicator.innerText = `${sign} ${newPrice
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
-    }
-    priceIndicator.style = "color: white;";
-  }
-
-  prevPrice = newPrice;
-}
-
-// FAST PRICE ______________________________________
-
-var lastPriceBL = document.getElementById("buy-limit-fast-price");
-var lastPriceSL = document.getElementById("sell-limit-fast-price");
-
-lastPriceBL.onclick = function () {
-  price = parseFloat(newPrice);
-  // price -= 10;
-  buyLimitPrice.value = Math.floor(price - 5);
-  console.log(buyLimitPrice.value);
-};
-
-lastPriceSL.onclick = function () {
-  price = parseFloat(newPrice);
-  // price -= 10;
-  sellLimitPrice.value = Math.floor(price + 5);
-  console.log(sellLimitPrice.value);
-};
-
-window.onload = function () {
-  priceSocket.addEventListener("message", updatePriceTicker);
-};
 
 // Partyle determines default candlestick size
 var socket = binanceSocket_btcusdt_4h;
@@ -536,6 +607,23 @@ $("#select-trade").change(function (event) {
     success: function (result) {
       // var data = JSON.parse(result);
       // console.log(result);
+      if (currentSymbol === "eurusdt") {
+        candleSeries.applyOptions({
+          priceFormat: {
+            type: "price",
+            precision: 4,
+            minMove: 0.0001,
+          },
+        });
+      } else {
+        candleSeries.applyOptions({
+          priceFormat: {
+            type: "price",
+            precision: 0,
+            minMove: 1,
+          },
+        });
+      }
       result.pop();
       candleSeries.setData(result);
       socket.addEventListener("message", updateCandles);
