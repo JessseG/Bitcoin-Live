@@ -300,6 +300,16 @@ select {
   /* margin-left: 0.7vw; */
 }
 
+#reload-chart-btn {
+  position: absolute;
+  display: none;
+  bottom: 50%;
+  right: 50%;
+  z-index: 401;
+  font-size: 1.8vh;
+  padding: 0.5vh 0.8vh;
+}
+
 .lds-spinner {
   position: absolute;
   color: official;

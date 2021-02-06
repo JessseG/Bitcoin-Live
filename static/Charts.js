@@ -293,6 +293,7 @@ window.addEventListener("resize", reportWindowSize);
 // }
 
 let loader = document.querySelector(".lds-spinner");
+let reloadBtn = document.getElementById("reload-chart-btn");
 
 $(document).ready(function (event) {
   // event.preventDefault();
@@ -309,20 +310,25 @@ $(document).ready(function (event) {
       loader.style = "display: none;";
       socket.addEventListener("message", updateCandles);
     },
+    start_time: new Date().getTime(),
     timeout: 33000,
     error: function (xmlhttprequest, textstatus, message) {
-      if (timeout >= 20000) {
-        console.log("reload");
+      if (new Date().getTime() - this.start_time > 15000) {
+        loader.style = "display: none;";
+        reloadBtn.style = "display: block;";
+        reloadBtn.addEventListener("click", function () {
+          location.reload();
+        });
       }
       if (textstatus === "timeout") {
         alert("got timeout");
       } else {
         $.ajax(this);
+        console.log(textstatus);
         // location.reload();
         // alert("Error Loading Chart Please Reload");
       }
     },
-    start_time: new Date().getTime(),
     complete: function (data) {
       // console.log(
       //   "This request took " + (new Date().getTime() - this.start_time) + " ms"
