@@ -170,8 +170,8 @@ let h = window.innerHeight * heightRatio; //537 - smaller
 function reportWindowSize() {
   // heightOutput.textContent = window.innerHeight;
   // widthOutput.textContent = window.innerWidth;
-  console.log(window.innerWidth);
-  console.log(window.innerHeight);
+  // console.log(window.innerWidth);
+  // console.log(window.innerHeight);
   chart.resize(
     window.innerWidth * widthRatio,
     window.innerHeight * heightRatio
@@ -302,6 +302,7 @@ $(document).ready(function (event) {
     data: {
       symbol: "BTCUSDT",
     },
+    async: true,
     success: function (result) {
       result.pop();
       candleSeries.setData(result);
@@ -310,6 +311,9 @@ $(document).ready(function (event) {
     },
     timeout: 33000,
     error: function (xmlhttprequest, textstatus, message) {
+      if (timeout >= 20000) {
+        console.log("reload");
+      }
       if (textstatus === "timeout") {
         alert("got timeout");
       } else {
