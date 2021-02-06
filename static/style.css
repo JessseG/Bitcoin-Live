@@ -307,6 +307,8 @@ select {
   right: 50%;
   z-index: 401;
   font-size: 1.8vh;
+  font-weight: 500;
+  border-radius: 0.2vh;
   padding: 0.5vh 0.8vh;
 }
 

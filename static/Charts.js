@@ -313,15 +313,12 @@ $(document).ready(function (event) {
     start_time: new Date().getTime(),
     timeout: 33000,
     error: function (xmlhttprequest, textstatus, message) {
-      if (new Date().getTime() - this.start_time > 15000) {
+      if (new Date().getTime() - this.start_time > 25000) {
         loader.style = "display: none;";
         reloadBtn.style = "display: block;";
         reloadBtn.addEventListener("click", function () {
           location.reload();
         });
-      }
-      if (textstatus === "timeout") {
-        alert("got timeout");
       } else {
         $.ajax(this);
         console.log(textstatus);
