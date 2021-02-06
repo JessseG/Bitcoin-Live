@@ -313,7 +313,7 @@ $(document).ready(function (event) {
     start_time: new Date().getTime(),
     timeout: 33000,
     error: function (xmlhttprequest, textstatus, message) {
-      if (new Date().getTime() - this.start_time > 33000) {
+      if (new Date().getTime() - this.start_time > 60000) {
         loader.style = "display: none;";
         reloadBtn.style = "display: block;";
         reloadBtn.addEventListener("click", function () {
