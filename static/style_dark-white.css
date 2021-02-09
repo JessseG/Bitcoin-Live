@@ -403,7 +403,7 @@ select {
   margin-top: 0;
   border-radius: 0.3vh;
   padding: 0.1vh 2vh 0.7vh 2vh;
-  background: #353544;
+  background: #bdbdbd;
   /* opacity: 88%; */
   /* border: 1px solid rgb(146, 146, 146); */
 }
@@ -420,7 +420,7 @@ select {
   margin: 2.4vh 0 0.9vh 1vw;
   font-size: 2.9vh;
   display: inline-block;
-  color: rgb(237, 237, 237);
+  color: rgb(43, 43, 43);
   letter-spacing: 0.1vh;
   /* font-weight: 400; */
 }
@@ -511,7 +511,7 @@ select {
 }
 
 .input-price-box {
-  background-color: hsla(216, 12%, 32%, 0.809);
+  background-color: hsla(0, 0%, 40%, 0.809);
   /* opacity: 88%; */
   vertical-align: middle;
   border-radius: 0.4vh;
@@ -586,7 +586,7 @@ select {
 }
 
 .input-amount-box {
-  background-color: hsla(216, 12%, 32%, 0.809);
+  background-color: hsla(0, 0%, 40%, 0.809);
   /* opacity: 88%; */
   vertical-align: middle;
   border-radius: 0.4vh;
@@ -691,7 +691,7 @@ select {
   margin: 0 0 1.5vh 0.8vw;
   width: 69.5%;
   height: 0.8vh;
-  background: hsla(215, 12%, 36%, 0.809);
+  background: rgb(118, 118, 118);
   outline: none;
   opacity: 0.7;
   -webkit-transition: 0.2s;
@@ -711,7 +711,7 @@ select {
   height: 1.7vh;
   background: rgb(17, 17, 17);
   cursor: pointer;
-  border-radius: 0.7vh;
+  border-radius: 0.5vh;
 }
 
 .slider2::-moz-range-thumb {
@@ -719,7 +719,7 @@ select {
   height: 1.7vh;
   background: rgb(17, 17, 17);
   cursor: pointer;
-  border-radius: 0.5vh;
+  border-radius: 0.7vh;
 }
 
 .plus-ten {
@@ -786,7 +786,6 @@ select {
   color: white;
   width: 93%;
   cursor: pointer;
-  cursor: pointer;
   font-family: "Open Sans";
   display: block;
   margin: auto;
@@ -809,7 +808,6 @@ select {
   border-radius: 0.4vh;
   color: white;
   width: 93%;
-  cursor: pointer;
   cursor: pointer;
   font-family: "Open Sans";
   display: block;
@@ -903,27 +901,22 @@ h4 {
   padding: 1.2vh 0.7vh;
   font-size: 1.8vh;
   font-family: "Open Sans";
-  color: rgb(255, 255, 255);
-  background-color: #202029;
+  color: rgb(2, 2, 2);
+  background-color: #616161;
   margin-bottom: 0.3vh;
   border-collapse: separate;
 }
 
-#trade-history-table th {
-  /* border-bottom: 0.3px solid rgb(102, 121, 121); */
-}
-
 #trade-history-table td {
   /* width: 5%; */
-  border-bottom: 0.3px solid rgb(56, 70, 70);
   padding: 1.2vh 0.7vh;
   font-family: "Open Sans";
   font-size: 1.6vh;
-  font-weight: 495;
+  font-weight: 520;
   letter-spacing: 1px;
   text-align: center;
-  color: white;
-  background-color: #353544;
+  color: rgb(0, 0, 0);
+  background-color: #bdbdbd;
 }
 
 #row-2-column-2 {
@@ -940,12 +933,12 @@ h4 {
   border-radius: 0.4vh;
   padding: 2vh 2vh 1.3vh 2vh;
   /* margin: 1vh; */
-  background: #353544;
+  background: #bdbdbd;
   /* border: 1px solid aqua; */
 }
 
 #automation-title {
-  color: rgb(237, 237, 237);
+  color: rgb(43, 43, 43);
   margin: 0.5vh 0 0.9vh 0.7vw;
   display: inline-block;
   font-size: 2.8vh;
@@ -966,6 +959,7 @@ h4 {
 
 #automation-body hr {
   width: 90%;
+  color: rgb(43, 43, 43);
   /* margin: 0; */
   /* visibility: hidden; */
 }
@@ -1088,7 +1082,7 @@ input:checked + .slider:before {
   background-color: rgb(236, 54, 54);
   cursor: pointer;
   /* width: 2.6vw; */
-  padding: 0.6vh 0.5vh;
+  padding: 0.6vh 0.8vh;
   border-radius: 0.4vh;
   /* vertical-align: -0.2vh; */
   /* margin-left: 0.2vh; */
@@ -1122,7 +1116,7 @@ input:checked + .slider:before {
   outline: none;
   border-radius: 0.5vh;
   /* color: rgb(55, 55, 55); */
-  color: white;
+  color: rgb(43, 43, 43);
   /* -webkit-text-stroke: 0.3px; */
   /* -webkit-text-stroke-color: rgb(41, 41, 41); */
   font-size: 1.7vh;
@@ -1152,7 +1146,7 @@ input:checked + .slider:before {
   border: none;
   outline: none;
   border-radius: 0.5vh;
-  color: white;
+  color: rgb(43, 43, 43);
   -webkit-text-stroke: 0.3px;
   -webkit-text-stroke-color: rgb(41, 41, 41);
   font-size: 1.7vh;
@@ -1178,7 +1172,7 @@ input:checked + .slider:before {
   /* outline: none; */
   /* border: none; */
   border-radius: 0.5vh;
-  color: white;
+  color: rgb(43, 43, 43);
   -webkit-text-stroke: 0.3px;
   -webkit-text-stroke-color: rgb(41, 41, 41);
   font-size: 1.7vh;
