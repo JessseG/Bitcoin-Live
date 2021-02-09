@@ -516,7 +516,7 @@ $("#maximize-buy").click(function (event) {
         buyLimitPriceBox.style.border = "none";
       },
       error: function (result) {
-        alert("Invalid Input");
+        alert("Max-buy Error");
       },
     });
   } else if (!buyLimitPrice.value) {
@@ -543,7 +543,7 @@ $("#maximize-sell").click(function (event) {
         sellLimitPriceBox.style.border = "none";
       },
       error: function (result) {
-        alert("Invalid Input");
+        alert("Max-sell Error");
       },
     });
   } else if (!sellLimitPrice.value) {

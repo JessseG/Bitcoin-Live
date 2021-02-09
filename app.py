@@ -480,9 +480,13 @@ def maximizeBuy():
     limitPrice = request.form['buyPrice']
 
     if symbol == "BTCUSDT":
+        if usdt_raw_balance < 10:
+            return jsonify({'maxBuy': 0})
         maxBuyAmount = float(calculateMaxBuy(limitPrice, btc_usdt_tickSize, usdt_raw_balance, btc_usdt_stepSize))
         # maxBuyAmount = float(floatPrecision((btc_raw_balance - (btc_raw_balance * btc_usdt_fee)), btc_usdt_stepSize)) #no longer taker fee
     elif symbol == "BTCEUR":
+        if eur_raw_balance < 10:
+            return jsonify({'maxBuy': 0})
         maxBuyAmount = float(calculateMaxBuy(limitPrice, btc_eur_tickSize, eur_raw_balance, btc_eur_stepSize))
         # maxBuyAmount = float(floatPrecision((btc_raw_balance - (btc_raw_balance * btc_eur_fee)), btc_eur_stepSize)) #no longer taker fee
     elif symbol == "EURUSDT":
