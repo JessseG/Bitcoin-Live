@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/lightweight-charts@3.3.0/dist/lightweight-charts.standalone.production.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script> -->
-    <!-- <script type="text/javascript" src="../data/candleData.json"></script> -->
     <link rel="stylesheet" href="../static/style.css" />
-    <title>Coinview</title>
+    <title>Bitcoin LIVE</title>
   </head>
 
   <header>
@@ -24,7 +22,6 @@
       <li><a href="#sell">Sell</a></li>
     </ul>
   </header>
-  <!-- {% block title %} -->
   <body>
     <div id="status-bar">
       <span id="page-trade-symbol">
@@ -34,9 +31,6 @@
             <option value="BTCEUR">BTC&#8239;/&#8239;EUR</option>
             <option value="EURUSDT">EUR&#8239;/&#8239;USDT</option>
           </select>
-          <!-- <span class="btc-title">BTC</span>
-          <span class="slash">/</span>
-          <span class="usdt-title">USDT</span> -->
         </h3>
       </span>
       <span class="status-indicator" id="real-time-price"></span>
@@ -95,10 +89,6 @@
                 <option value="3d" id="3D">3D</option>
               </select>
             </li>
-            <!-- <li>
-              <img src="../static/last.svg" id="reset-chart-icon" />
-              <img src="../static/circle-right.svg" id="reset-chart-icon" />
-            </li> -->
           </ul>
           <div id="charts">
             <div class="lds-spinner">
@@ -465,5 +455,4 @@
     <script src="../static/DynamicUI.js"></script>
     <!-- <script src="{{ url_for('static', filename='DynamicUI.js') }}"></script> -->
   </body>
-  <!-- {% endblock %} -->
 </html>

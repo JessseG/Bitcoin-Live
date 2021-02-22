@@ -7,3 +7,5 @@ automation/
 data/
 .vscode/
 __pycache__/
+README.md
+gunicorn.conf.py

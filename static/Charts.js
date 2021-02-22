@@ -70,7 +70,7 @@ function updatePriceTicker(event) {
     percentChange24Hour.innerText = `+ ${percentChanged}%`;
     percentChange24Hour.style = "color: rgb(0, 190, 10); font-size: 2vh;"; // green
   } else if (parseFloat(message.P) < 0) {
-    percentChange24Hour.innerText = `– &#8239;${percentChanged}%`;
+    percentChange24Hour.innerText = `${percentChanged}%`;
     percentChange24Hour.style = "color: #ff3b3b; font-size: 2vh;"; // red
   } else if (parseFloat(message.P) === 0) {
     percentChange24Hour.innerText = `${percentChanged}%`;
@@ -163,9 +163,9 @@ let widthRatio = 0.733; // 0.71 works on heroku with a row-1-column-1 & row-2-co
 let w = window.innerWidth * widthRatio; //1060 - bigger
 let h = window.innerHeight * heightRatio; //537 - smaller
 
-// console.log(window.innerWidth);
-// console.log(window.innerHeight);
-// console.log();
+console.log(window.innerWidth);
+console.log(window.innerHeight);
+console.log();
 
 function reportWindowSize() {
   // heightOutput.textContent = window.innerHeight;
