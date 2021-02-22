@@ -98,15 +98,14 @@ function updatePriceTicker(event) {
   low24Hour.innerText = `${sign} ${lowPrice24Hour}`;
   low24Hour.style = "color: rgb(69, 196, 255); font-size: 2vh;"; // light-blue
 
-  let base24HourVol = Math.floor(parseFloat(message.v))
-    .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  let baseAsset = symbol.substring(0, 3);
-  let quoteAsset = symbol.substring(3);
+  // let base24HourVol = Math.floor(parseFloat(message.v))
+  //   .toString()
+  //   .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  // let baseAsset = symbol.substring(0, 3);
   // console.log(quoteAsset);
 
-  base24HourVolume.innerText = `${base24HourVol} ${baseAsset}`;
-  base24HourVolume.style = "color: rgb(255, 224, 51); font-size: 2vh;"; // gold
+  // base24HourVolume.innerText = `${base24HourVol} ${baseAsset}`;
+  // base24HourVolume.style = "color: rgb(255, 224, 51); font-size: 2vh;"; // gold
 
   function convertNumber(num) {
     let modNum = "";
@@ -119,6 +118,7 @@ function updatePriceTicker(event) {
     return modNum;
   }
 
+  let quoteAsset = symbol.substring(3);
   let quote24HourVol = convertNumber(Math.floor(parseFloat(message.q)));
   if (quoteAsset === "USDT") {
     quote24HourVolume.innerText = `$ ${quote24HourVol}`;
