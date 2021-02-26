@@ -18,6 +18,12 @@ var low24Hour = document.getElementById("real-24h-low");
 var base24HourVolume = document.getElementById("real-24h-base-volume");
 var quote24HourVolume = document.getElementById("real-24h-quote-volume");
 
+var baseDisplay = "none";
+var quoteDisplay = "inline-block";
+
+quote24HourVolume.style.display = quoteDisplay;
+base24HourVolume.style.display = baseDisplay;
+
 function updatePriceTicker(event) {
   var message = JSON.parse(event.data);
   // console.log(message.c);
@@ -74,7 +80,7 @@ function updatePriceTicker(event) {
     percentChange24Hour.style = "color: #ff3b3b; font-size: 2vh;"; // red
   } else if (parseFloat(message.P) === 0) {
     percentChange24Hour.innerText = `${percentChanged}%`;
-    percentChange24Hour.style = "color: white; font-size: 2vh;";
+    percentChange24Hour.style = "color: white; font-size: 2vh;"; // white
   }
 
   let lowPrice24Hour;
@@ -98,14 +104,13 @@ function updatePriceTicker(event) {
   low24Hour.innerText = `${sign} ${lowPrice24Hour}`;
   low24Hour.style = "color: rgb(69, 196, 255); font-size: 2vh;"; // light-blue
 
-  // let base24HourVol = Math.floor(parseFloat(message.v))
-  //   .toString()
-  //   .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  // let baseAsset = symbol.substring(0, 3);
-  // console.log(quoteAsset);
+  let base24HourVol = Math.floor(parseFloat(message.v))
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  let baseAsset = symbol.substring(0, 3);
 
-  // base24HourVolume.innerText = `${base24HourVol} ${baseAsset}`;
-  // base24HourVolume.style = "color: rgb(255, 224, 51); font-size: 2vh;"; // gold
+  base24HourVolume.innerText = `${base24HourVol} ${baseAsset}`;
+  base24HourVolume.style = `display: ${baseDisplay}; color: rgb(255, 224, 51); font-size: 2vh;`; // gold
 
   function convertNumber(num) {
     let modNum = "";
@@ -119,18 +124,37 @@ function updatePriceTicker(event) {
   }
 
   let quoteAsset = symbol.substring(3);
+  // console.log(quoteAsset);
+
   let quote24HourVol = convertNumber(Math.floor(parseFloat(message.q)));
   if (quoteAsset === "USDT") {
     quote24HourVolume.innerText = `$ ${quote24HourVol}`;
-    quote24HourVolume.style = "color: rgb(0, 190, 10); font-size: 2vh;"; // gold
+    quote24HourVolume.style = `display: ${quoteDisplay}; color: rgb(0, 190, 10); font-size: 2vh;`; // green
   } else if (quoteAsset === "EUR") {
     quote24HourVolume.innerText = `€ ${quote24HourVol}`;
-    quote24HourVolume.style = "color: rgb(69, 196, 255); font-size: 2vh;"; // gold
+    quote24HourVolume.style = `display: ${quoteDisplay}; color: rgb(69, 196, 255); font-size: 2vh;`; // blue
   } else {
     quote24HourVolume.innerText = `${quote24HourVol} ${quoteAsset}`;
-    quote24HourVolume.style = "color: rgb(255, 224, 51); font-size: 2vh;"; // gold
+    quote24HourVolume.style = `display: ${quoteDisplay}; color: rgb(255, 224, 51); font-size: 2vh;`; // gold
   }
 }
+//_____________________________________________________
+
+let assetFlip = 1;
+function flipAsset() {
+  // console.log("flip");
+  if (assetFlip % 2 === 0) {
+    baseDisplay = "none";
+    quoteDisplay = "inline-block";
+  } else if (assetFlip % 2 === 1) {
+    baseDisplay = "inline-block";
+    quoteDisplay = "none";
+  }
+  assetFlip++;
+}
+
+let flipIcon = document.getElementById("flip-asset-icon");
+flipIcon.addEventListener("click", flipAsset);
 
 // FAST PRICE ______________________________________
 
@@ -153,18 +177,22 @@ lastPriceSL.onclick = function () {
 
 window.onload = function () {
   priceSocket.addEventListener("message", updatePriceTicker);
+  // base24HourVolume.style = "display: inline-block;";
+  // quote24HourVolume.style = "display: none;";
+  // console.log(quote24HourVolume.style.display);
+  // console.log(base24HourVolume.style.display);
 };
 
 //________________________________________________________________________________________________________
 
 let heightRatio = 0.55; // 0.63
-let widthRatio = 0.733; // 0.71 works on heroku with a row-1-column-1 & row-2-column-1 width: 72.5% CSS
+let widthRatio = 0.75; // 0.71 works on heroku with a row-1-column-1 & row-2-column-1 width: 72.5% CSS
 
 let w = window.innerWidth * widthRatio; //1060 - bigger
 let h = window.innerHeight * heightRatio; //537 - smaller
 
-console.log(window.innerWidth);
-console.log(window.innerHeight);
+// console.log(window.innerWidth);
+// console.log(window.innerHeight);
 console.log();
 
 function reportWindowSize() {
