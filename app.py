@@ -293,7 +293,8 @@ def webhook():
 
 @app.route('/')
 def index():
-
+    #useful for old heroku links
+    return redirect('http://bitcoin-live.trade/', code=302)
     # info = client.get_klines(symbol='BTCUSDT', interval=Client.KLINE_INTERVAL_15MINUTE)
 
     info = client.get_account()
