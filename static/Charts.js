@@ -74,13 +74,16 @@ function updatePriceTicker(event) {
 
   if (parseFloat(message.P) > 0) {
     percentChange24Hour.innerText = `+ ${percentChanged}%`;
-    percentChange24Hour.style = "color: rgb(0, 190, 10); font-size: 2vh;"; // green
+    percentChange24Hour.style =
+      "color: rgb(0, 190, 10); font-size: 2vh; letter-spacing: 0.4px"; // green
   } else if (parseFloat(message.P) < 0) {
     percentChange24Hour.innerText = `${percentChanged}%`;
-    percentChange24Hour.style = "color: #ff3b3b; font-size: 2vh;"; // red
+    percentChange24Hour.style =
+      "color: #ff3b3b; font-size: 2vh; letter-spacing: 0.4px"; // red
   } else if (parseFloat(message.P) === 0) {
     percentChange24Hour.innerText = `${percentChanged}%`;
-    percentChange24Hour.style = "color: white; font-size: 2vh;"; // white
+    percentChange24Hour.style =
+      "color: white; font-size: 2vh; letter-spacing: 0.4px"; // white
   }
 
   let lowPrice24Hour;
@@ -99,10 +102,10 @@ function updatePriceTicker(event) {
   }
 
   high24Hour.innerText = `${sign} ${highPrice24Hour}`;
-  high24Hour.style = "color: rgb(69, 196, 255); font-size: 2vh;"; // light-blue
+  high24Hour.style = "color: white; font-size: 2vh;"; // light-blue
 
   low24Hour.innerText = `${sign} ${lowPrice24Hour}`;
-  low24Hour.style = "color: rgb(69, 196, 255); font-size: 2vh;"; // light-blue
+  low24Hour.style = "color: white; font-size: 2vh;"; // light-blue
 
   let base24HourVol = Math.floor(parseFloat(message.v))
     .toString()
@@ -185,7 +188,7 @@ window.onload = function () {
 
 //________________________________________________________________________________________________________
 
-let heightRatio = 0.55; // 0.63
+let heightRatio = 0.557; // 0.63
 let widthRatio = 0.75; // 0.71 works on heroku with a row-1-column-1 & row-2-column-1 width: 72.5% CSS
 
 let w = window.innerWidth * widthRatio; //1060 - bigger
@@ -210,7 +213,7 @@ var chart = LightweightCharts.createChart(document.getElementById("charts"), {
   width: w,
   height: h,
   layout: {
-    backgroundColor: "#161616",
+    backgroundColor: "#141411",
     textColor: "rgba(255, 255, 255, 0.9)",
     fontSize: 14.2,
     fontFamily: "Ubuntu",
@@ -219,11 +222,11 @@ var chart = LightweightCharts.createChart(document.getElementById("charts"), {
   },
   grid: {
     vertLines: {
-      color: "#424242",
+      color: "#383838",
       width: 0.3,
     },
     horzLines: {
-      color: "#424242",
+      color: "#383838",
       width: 0.3,
     },
   },
@@ -661,6 +664,10 @@ $("#select-trade").change(function (event) {
       }
       result.pop();
       candleSeries.setData(result);
+      let baseA = currentSymbol.substring(0, 3);
+      let quoteA = currentSymbol.substring(3);
+      $("span.base-asset").html(baseA.toUpperCase());
+      $("span.quote-asset").html(quoteA.toUpperCase());
       socket.addEventListener("message", updateCandles);
       priceSocket.addEventListener("message", updatePriceTicker);
       // console.log(result.msg);

@@ -35,7 +35,7 @@
         </h3>
       </span>
       <span class="status-indicator" id="real-time-price"></span>
-      <label class="status-label">24h-Change:</label>
+      <label class="status-label">24h Change:</label>
       <span class="status-indicator" id="real-24h-change"></span>
       <label class="status-label">High:</label>
       <span class="status-indicator" id="real-24h-high"></span>
@@ -44,7 +44,11 @@
       <label class="status-label">24h-Volume:</label>
       <span class="status-indicator" id="real-24h-quote-volume"></span>
       <span class="status-indicator" id="real-24h-base-volume"></span>
-      <img src="../static/asset-switch-icon-white.png" id="flip-asset-icon" />
+      <img
+        src="../static/asset-switch-icon-white.png"
+        id="flip-asset-icon"
+        title="Switch"
+      />
       <!-- <img src="../static/forward-restore.svg" id="flip-asset-icon" /> -->
       <!-- <span class="status-indicator">&#8239;|&#8239;</span> -->
     </div>
@@ -148,7 +152,7 @@
                     min="0"
                     step="1"
                   />
-                  <span class="asset-placeholder">USDT</span>
+                  <span class="asset-placeholder quote-asset">USDT</span>
                 </div>
               </div>
               <!-- <span class="change-price">
@@ -168,7 +172,7 @@
                     id="buy-limit-quantity"
                     name="buy-limit-quantity"
                   />
-                  <span class="asset-placeholder">BTC</span>
+                  <span class="asset-placeholder base-asset">BTC</span>
                 </div>
               </div>
               <!-- <img src="../static/last-price-2.png" class="fast-price-icon" />
@@ -234,7 +238,7 @@
                     min="0"
                     step="1"
                   />
-                  <span class="asset-placeholder">USDT</span>
+                  <span class="asset-placeholder quote-asset">USDT</span>
                 </div>
               </div>
               <!-- <button id="maximize-sell" type="button">Max</button> -->
@@ -258,7 +262,7 @@
                     id="sell-limit-quantity"
                     name="sell-limit-quantity"
                   />
-                  <span class="asset-placeholder">BTC</span>
+                  <span class="asset-placeholder base-asset">BTC</span>
                 </div>
               </div>
               <div class="buy-limit-options">
@@ -328,7 +332,7 @@
                     id="auto-trade-quantity"
                     name="auto-trade-quantity"
                   />
-                  <span class="asset-placeholder">BTC</span>
+                  <span class="asset-placeholder base-asset">BTC</span>
                 </div>
               </div>
               <!-- ———————————————————————————————————————————————————————————— -->
@@ -338,9 +342,9 @@
                   <option value="BTCEUR">BTC&#8239;/&#8239;EUR</option>
                   <option value="EURUSDT">EUR&#8239;/&#8239;USDT</option>
                 </select> -->
-                <button id="strategy-modal" type="button">Strategy</button>
+                <!-- <button id="strategy-modal" type="button">Strategy</button> -->
                 <!-- <input type="text" name="passcode-buy" class="auto-passcode" /> -->
-                <select name="" id="" class="auto-passcode">
+                <select name="" id="select-strategy">
                   <option disabled selected value value="">Select</option>
                   <option value="MACD">MACD</option>
                   <option value="MACD">BOLL</option>
@@ -369,7 +373,7 @@
                   <option value="2H">2H</option>
                   <option value="2H">3H</option>
                 </select> -->
-
+                <img src="../static/add-icon.png" id="add-strategy-icon" />
                 <button id="maximize-auto-trade" type="button">Max</button>
               </div>
               <!-- <hr /> -->
