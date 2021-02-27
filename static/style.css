@@ -365,13 +365,13 @@ select {
 #reset-chart-icon {
   display: block;
   filter: invert(1);
-  width: 4vh;
-  height: 4vh;
+  width: 3.8vh;
+  height: 3.8vh;
   z-index: 400;
   cursor: pointer;
   position: absolute;
   bottom: 9.8%;
-  right: 7.4%;
+  right: 6.8%;
   opacity: 70%;
 }
 
