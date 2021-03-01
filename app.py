@@ -34,13 +34,13 @@ automation_symbol = current_symbol
 candles = ["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","1d","3d"]
 periods = ["1MINUTE","3MINUTE","5MINUTE","15MINUTE","30MINUTE","1HOUR","2HOUR","4HOUR","6HOUR","8HOUR","1DAY","3DAY"]
 timeframes = [
-    "28 Jan, 2021", #1m
-    "22 Jan, 2021", #3m
-    "10 Jan, 2021", #5m
+    "20 Feb, 2021", #1m
+    "12 Feb, 2021", #3m
+    "1 Feb, 2021", #5m
     "28 Dec, 2020", #15m
     "Nov 10, 2020", #30m
     "1 Apr, 2020",  #1H
-    "1 Aug, 2019",  #2H
+    "1 Sept, 2019",  #2H
     "1 Apr, 2019",  #4H
     "1 Jan, 2019",  #6H
     "1 Jun, 2018",  #8H
@@ -438,7 +438,7 @@ def settings():
 
 @app.route('/default', methods=['POST'])
 def default():
-    candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_4HOUR, "1 Apr, 2019")
+    candlesticks = client.get_historical_klines_generator("BTCUSDT", Client.KLINE_INTERVAL_4HOUR, "30 Apr, 2019")
 
     processed_candlesticks = []
 

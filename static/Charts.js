@@ -240,6 +240,20 @@ var chart = LightweightCharts.createChart(document.getElementById("charts"), {
   },
   crosshair: {
     mode: LightweightCharts.CrosshairMode.Normal,
+    vertLine: {
+      color: "#6A5ACD",
+      width: 0.6,
+      style: 2,
+      visible: true,
+      labelVisible: true,
+    },
+    horzLine: {
+      color: "#6A5ACD",
+      width: 0.6,
+      style: 2,
+      visible: true,
+      labelVisible: true,
+    },
   },
   priceScale: {
     borderColor: "rgba(197, 203, 206, 0.8)",
@@ -295,6 +309,114 @@ candleSeries.applyOptions({
     minMove: 1,
   },
 });
+
+const preLoadChart = () => {
+  chart.applyOptions({
+    layout: {
+      textColor: "#141411",
+    },
+    grid: {
+      vertLines: {
+        visible: false,
+      },
+      horzLines: {
+        visible: false,
+      },
+    },
+    crosshair: {
+      vertLine: {
+        visible: false,
+        labelVisible: false,
+      },
+      horzLine: {
+        visible: false,
+        labelVisible: false,
+      },
+    },
+    timeScale: {
+      timeVisible: false,
+      // borderVisible: false,
+    },
+  });
+
+  candleSeries.applyOptions({
+    visible: false,
+  });
+};
+
+const postLoadChart = (currentSymbol) => {
+  if (currentSymbol === "eurusdt") {
+    chart.applyOptions({
+      layout: {
+        textColor: "rgba(255, 255, 255, 0.9)",
+      },
+      grid: {
+        vertLines: {
+          visible: true,
+        },
+        horzLines: {
+          visible: true,
+        },
+      },
+      crosshair: {
+        vertLine: {
+          visible: true,
+          labelVisible: true,
+        },
+        horzLine: {
+          visible: true,
+          labelVisible: true,
+        },
+      },
+      timeScale: {
+        timeVisible: true,
+      },
+    });
+    candleSeries.applyOptions({
+      visible: true,
+      priceFormat: {
+        type: "price",
+        precision: 4,
+        minMove: 0.0001,
+      },
+    });
+  } else {
+    chart.applyOptions({
+      layout: {
+        textColor: "rgba(255, 255, 255, 0.9)",
+      },
+      grid: {
+        vertLines: {
+          visible: true,
+        },
+        horzLines: {
+          visible: true,
+        },
+      },
+      crosshair: {
+        vertLine: {
+          visible: true,
+          labelVisible: true,
+        },
+        horzLine: {
+          visible: true,
+          labelVisible: true,
+        },
+      },
+      timeScale: {
+        timeVisible: true,
+      },
+    });
+    candleSeries.applyOptions({
+      visible: true,
+      priceFormat: {
+        type: "price",
+        precision: 0,
+        minMove: 1,
+      },
+    });
+  }
+};
 
 // function resize() {
 //   chart.applyOptions({
@@ -440,6 +562,7 @@ for (let x = 0; x < candleSelectors.length; x++) {
 
   $(eval(candleSelectors[x])).change(function (event) {
     event.preventDefault();
+    preLoadChart();
     loader.style.display = "block";
     let currentSymbol = $("#select-trade").val().toLowerCase();
     socket.removeEventListener("message", updateCandles);
@@ -467,6 +590,7 @@ for (let x = 0; x < candleSelectors.length; x++) {
       success: function (result) {
         // var data = JSON.parse(result);
         // console.log(result);
+        postLoadChart(currentSymbol);
         result.pop();
         candleSeries.setData(result);
         loader.style.display = "none";
@@ -605,8 +729,9 @@ $("#select-trade").change(function (event) {
   event.preventDefault();
   // console.log(event.target.id);
   // console.log(this.value);
-  loader.style.display = "block";
 
+  preLoadChart();
+  loader.style.display = "block";
   socket.removeEventListener("message", updateCandles);
   priceSocket.removeEventListener("message", updatePriceTicker);
 
@@ -639,23 +764,7 @@ $("#select-trade").change(function (event) {
       // wipe
       $("input.input-price").val("");
       $("input.input-amount").val("");
-      if (currentSymbol === "eurusdt") {
-        candleSeries.applyOptions({
-          priceFormat: {
-            type: "price",
-            precision: 4,
-            minMove: 0.0001,
-          },
-        });
-      } else {
-        candleSeries.applyOptions({
-          priceFormat: {
-            type: "price",
-            precision: 0,
-            minMove: 1,
-          },
-        });
-      }
+      postLoadChart(currentSymbol);
       result.pop();
       candleSeries.setData(result);
       loader.style.display = "none";
