@@ -346,7 +346,7 @@ $(document).ready(function (event) {
     success: function (result) {
       result.pop();
       candleSeries.setData(result);
-      loader.style = "display: none;";
+      loader.style.display = "none";
       socket.addEventListener("message", updateCandles);
     },
     start_time: new Date().getTime(),
@@ -440,6 +440,7 @@ for (let x = 0; x < candleSelectors.length; x++) {
 
   $(eval(candleSelectors[x])).change(function (event) {
     event.preventDefault();
+    loader.style.display = "block";
     let currentSymbol = $("#select-trade").val().toLowerCase();
     socket.removeEventListener("message", updateCandles);
     // console.log(event.target.id);
@@ -468,6 +469,7 @@ for (let x = 0; x < candleSelectors.length; x++) {
         // console.log(result);
         result.pop();
         candleSeries.setData(result);
+        loader.style.display = "none";
         socket.addEventListener("message", updateCandles);
         // console.log(result.msg);
       },
@@ -603,6 +605,7 @@ $("#select-trade").change(function (event) {
   event.preventDefault();
   // console.log(event.target.id);
   // console.log(this.value);
+  loader.style.display = "block";
 
   socket.removeEventListener("message", updateCandles);
   priceSocket.removeEventListener("message", updatePriceTicker);
@@ -655,6 +658,7 @@ $("#select-trade").change(function (event) {
       }
       result.pop();
       candleSeries.setData(result);
+      loader.style.display = "none";
       let baseA = currentSymbol.substring(0, 3);
       let quoteA = currentSymbol.substring(3);
       $("span.base-asset").html(baseA.toUpperCase());

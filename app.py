@@ -35,10 +35,10 @@ candles = ["1m","3m","5m","15m","30m","1h","2h","4h","6h","8h","1d","3d"]
 periods = ["1MINUTE","3MINUTE","5MINUTE","15MINUTE","30MINUTE","1HOUR","2HOUR","4HOUR","6HOUR","8HOUR","1DAY","3DAY"]
 timeframes = [
     "28 Jan, 2021", #1m
-    "22 Jan, 2021",  #3m
-    "10 Jan, 2021",  #5m
-    "1 Dec, 2020",  #15m
-    "1 Sept, 2020",  #30m
+    "22 Jan, 2021", #3m
+    "10 Jan, 2021", #5m
+    "28 Dec, 2020", #15m
+    "Nov 10, 2020", #30m
     "1 Apr, 2020",  #1H
     "1 Aug, 2019",  #2H
     "1 Apr, 2019",  #4H
