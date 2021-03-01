@@ -1441,7 +1441,7 @@ input:checked + .slider:before {
   outline: none;
   transition: all 0.1s ease-in-out;
   margin: 0 auto;
-  margin-top: 0.9vh;
+  margin-top: 1.1vh;
 }
 
 #submit-automation:hover {

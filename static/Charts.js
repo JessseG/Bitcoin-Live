@@ -167,15 +167,23 @@ var lastPriceSL = document.getElementById("sell-limit-fast-price");
 lastPriceBL.onclick = function () {
   price = parseFloat(newPrice);
   // price -= 10;
-  buyLimitPrice.value = Math.floor(price - 5);
-  console.log(buyLimitPrice.value);
+  // buyLimitPrice.value = Math.floor(price - 5);
+  if (price > 1000) buyLimitPrice.value = Math.floor(price);
+  else if (price > 10 && price < 1000)
+    buyLimitPrice.value = Math.round((price + Number.EPSILON) * 100) / 100;
+  else buyLimitPrice.value = price;
+  // console.log(buyLimitPrice.value);
 };
 
 lastPriceSL.onclick = function () {
   price = parseFloat(newPrice);
   // price -= 10;
-  sellLimitPrice.value = Math.floor(price + 5);
-  console.log(sellLimitPrice.value);
+  // sellLimitPrice.value = Math.floor(price + 5);
+  if (price > 1000) sellLimitPrice.value = Math.floor(price);
+  else if (price > 10 && price < 1000)
+    sellLimitPrice.value = Math.round((price + Number.EPSILON) * 100) / 100;
+  else buyLimitPrice.value = price;
+  // console.log(sellLimitPrice.value);
 };
 
 window.onload = function () {
@@ -196,7 +204,7 @@ let h = window.innerHeight * heightRatio; //537 - smaller
 
 // console.log(window.innerWidth);
 // console.log(window.innerHeight);
-console.log();
+// console.log();
 
 function reportWindowSize() {
   // heightOutput.textContent = window.innerHeight;
@@ -352,7 +360,7 @@ $(document).ready(function (event) {
         });
       } else {
         $.ajax(this);
-        console.log(textstatus);
+        // console.log(textstatus);
         // location.reload();
         // alert("Error Loading Chart Please Reload");
       }
@@ -457,7 +465,7 @@ for (let x = 0; x < candleSelectors.length; x++) {
       },
       success: function (result) {
         // var data = JSON.parse(result);
-        console.log(result);
+        // console.log(result);
         result.pop();
         candleSeries.setData(result);
         socket.addEventListener("message", updateCandles);
@@ -469,56 +477,6 @@ for (let x = 0; x < candleSelectors.length; x++) {
     });
   });
 }
-
-// document
-//   .getElementById("select-minute-candles")
-//   .addEventListener("change", function () {
-//     // console.log(this.value);
-//     socket = eval(`binanceSocket_${this.value}`);
-//     // console.log(socket);
-//     fetch(`http://localhost:5000/${this.value}_candles`)
-//       .then((r) => r.json())
-//       .then((response) => {
-//         response.pop();
-//         console.log(response);
-//         candleSeries.setData(response);
-//       });
-//     socket.removeEventListener("message", updateCandles);
-//     socket.addEventListener("message", updateCandles);
-//   });
-
-// document
-//   .getElementById("select-hour-candles")
-//   .addEventListener("change", function () {
-//     // console.log(this.value);
-//     socket = eval(`binanceSocket_${this.value}`);
-//     // console.log(socket);
-//     fetch(`http://localhost:5000/${this.value}_candles`)
-//       .then((r) => r.json())
-//       .then((response) => {
-//         response.pop();
-//         console.log(response);
-//         candleSeries.setData(response);
-//       });
-//     socket.removeEventListener("message", updateCandles);
-//     socket.addEventListener("message", updateCandles);
-//   });
-
-// document
-//   .getElementById("select-day-candles")
-//   .addEventListener("change", function () {
-//     // console.log(this.value);
-//     socket = eval(`binanceSocket_${this.value}`);
-//     // console.log(socket);
-//     fetch(`http://localhost:5000/${this.value}_candles`)
-//       .then((r) => r.json())
-//       .then((response) => {
-//         response.pop();
-//         candleSeries.setData(response);
-//       });
-//     socket.removeEventListener("message", updateCandles);
-//     socket.addEventListener("message", updateCandles);
-//   });
 
 //___________________________________________________________________________________
 
@@ -579,6 +537,36 @@ $("#maximize-sell").click(function (event) {
     });
   } else if (!sellLimitPrice.value) {
     sellLimitPriceBox.style.border = "1px solid red";
+    return "No Input";
+  }
+});
+
+// let autoTradeAmount = document.getElementById("maximize-auto-trade");
+let autoTradeQuantity = document.getElementById("auto-trade-quantity");
+let autoTradeBox = document.getElementById("auto-trade-box");
+
+$("#maximize-auto-trade").click(function (event) {
+  event.preventDefault();
+  // console.log($("#select-trade").val());
+  if ($("#select-trade").val()) {
+    $.ajax({
+      url: "/max_autotrade",
+      type: "POST",
+      data: {
+        autoSymbol: $("#select-trade").val(),
+        // sellSymbol: $("#select-autotrade-symbol").val(),
+      },
+      success: function (result) {
+        autoTradeQuantity.value = result.maxAuto;
+        // console.log(result.maxSell);
+        autoTradeBox.style.border = "none";
+      },
+      error: function (result) {
+        alert("Max-auto Error");
+      },
+    });
+  } else if (!$("#select-trade").val()) {
+    autoTradeBox.style.border = "1px solid red";
     return "No Input";
   }
 });
@@ -645,6 +633,9 @@ $("#select-trade").change(function (event) {
     success: function (result) {
       // var data = JSON.parse(result);
       // console.log(result);
+      // wipe
+      $("input.input-price").val("");
+      $("input.input-amount").val("");
       if (currentSymbol === "eurusdt") {
         candleSeries.applyOptions({
           priceFormat: {
@@ -668,6 +659,7 @@ $("#select-trade").change(function (event) {
       let quoteA = currentSymbol.substring(3);
       $("span.base-asset").html(baseA.toUpperCase());
       $("span.quote-asset").html(quoteA.toUpperCase());
+      // $("span.asset-placeholder.base-asset").html(baseA.toUpperCase());
       socket.addEventListener("message", updateCandles);
       priceSocket.addEventListener("message", updatePriceTicker);
       // console.log(result.msg);

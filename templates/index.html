@@ -228,7 +228,7 @@
               </select>
               <input type="password" name="passcode-sell" class="passcode" />
               <div class="input-price-block">
-                <div class="input-price-box">
+                <div class="input-price-box" id="sell-limit-price-box">
                   <span class="label-placeholder">Price</span>
                   <input
                     class="input-price"
@@ -308,6 +308,15 @@
           <div id="automation-window">
             <div id="automation-header">
               <h2 id="automation-title">Automation</h2>
+              <select
+                name="auto-symbol"
+                class="select-limit-symbol"
+                id="select-autotrade-symbol"
+              >
+                <option value="BTCUSDT" selected>BTC/USDT</option>
+                <option value="BTCEUR">BTC/EUR</option>
+                <option value="EURUSDT">EUR/USDT</option>
+              </select>
               <!-- Rounded switch -->
               <label class="switch" id="toggle-automation">
                 <input type="checkbox" />

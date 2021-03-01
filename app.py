@@ -9,10 +9,12 @@ app.secret_key = b'jf8943jhgh5.k9ghn549g.0-4g-04.g-0.45grco-03er'
 client = Client(config.API_KEY, config.API_SECRET)
 
 btc_usdt_tickSize = None
-btc_usdt_stepSize = None
-
 btc_eur_tickSize = None
+eur_usdt_tickSize = None
+
+btc_usdt_stepSize = None
 btc_eur_stepSize = None
+eur_usdt_stepSize = None
 
 btc_usdt_raw_price = None
 
@@ -24,6 +26,7 @@ btc_usdt_trade_balance = None
 
 btc_usdt_fee = None
 btc_eur_fee = None
+eur_usdt_fee = None
 
 current_symbol = "BTCUSDT"
 automation_symbol = current_symbol
@@ -294,7 +297,8 @@ def webhook():
 @app.route('/')
 def index():
     #useful for old heroku links
-    return redirect('http://bitcoin-live.trade/', code=302)
+    # return redirect('http://bitcoin-live.trade/', code=302)
+    
     # info = client.get_klines(symbol='BTCUSDT', interval=Client.KLINE_INTERVAL_15MINUTE)
 
     info = client.get_account()
@@ -327,24 +331,29 @@ def index():
     symbols = ["BTCUSDT", "BTCEUR", "EURUSDT"]
 
     # Gets fees for different trades: BTCUSDT & BTCEUR
-    global btc_usdt_fee, btc_eur_fee
+    global btc_usdt_fee, btc_eur_fee, eur_usdt_fee
     btc_usdt_fee = client.get_trade_fee(symbol='BTCUSDT')['tradeFee'][0]['maker']
     btc_eur_fee = client.get_trade_fee(symbol='BTCEUR')['tradeFee'][0]['maker']
+    eur_usdt_fee = client.get_trade_fee(symbol='EURUSDT')['tradeFee'][0]['maker']
 
     # Gets the trading symbol info
     btc_usdt_info = client.get_symbol_info('BTCUSDT')
     btc_eur_info = client.get_symbol_info('BTCEUR')
+    eur_usdt_info = client.get_symbol_info('EURUSDT')
 
     # Gets USDT & EUR price tickSizes for Selling BTC for USDT & EUR
     global btc_usdt_tickSize
     global btc_eur_tickSize
+    global eur_usdt_tickSize
     btc_usdt_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', btc_usdt_info['filters']))[0]['tickSize'])
     btc_eur_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', btc_eur_info['filters']))[0]['tickSize'])
+    eur_usdt_tickSize = float(list(filter(lambda f: f['filterType'] == 'PRICE_FILTER', eur_usdt_info['filters']))[0]['tickSize'])
     
     # Gets BTC quantity stepSizes for Buying BTC with USDT & EUR
-    global btc_usdt_stepSize, btc_eur_stepSize
+    global btc_usdt_stepSize, btc_eur_stepSize, eur_usdt_stepSize
     btc_usdt_stepSize = float(list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_usdt_info['filters']))[0]['stepSize'])
     btc_eur_stepSize = float(list(filter(lambda f: f['filterType'] == 'LOT_SIZE', btc_eur_info['filters']))[0]['stepSize'])
+    eur_usdt_stepSize = float(list(filter(lambda f: f['filterType'] == 'LOT_SIZE', eur_usdt_info['filters']))[0]['stepSize'])
 
     # Gets latest prices
     global btc_usdt_raw_price
@@ -387,6 +396,7 @@ def buy():
             "message": "Failed Authentication"
         }
     try:
+        # regular limit order
         order = client.create_order(
             symbol=request.form['buy-symbol'],
             side=SIDE_BUY,
@@ -408,6 +418,7 @@ def sell():
             "message": "Failed Authentication"
         }
     try:
+        # regular limit order
         order = client.create_order(
             symbol=request.form['sell-symbol'],
             side=SIDE_SELL,
@@ -491,7 +502,9 @@ def maximizeBuy():
         maxBuyAmount = float(calculateMaxBuy(limitPrice, btc_eur_tickSize, eur_raw_balance, btc_eur_stepSize))
         # maxBuyAmount = float(floatPrecision((btc_raw_balance - (btc_raw_balance * btc_eur_fee)), btc_eur_stepSize)) #no longer taker fee
     elif symbol == "EURUSDT":
-        maxBuyAmount = "N/A"
+        if usdt_raw_balance < 10:
+            return jsonify({'maxBuy': 0})
+        maxBuyAmount = float(calculateMaxBuy(limitPrice, eur_usdt_tickSize, usdt_raw_balance, eur_usdt_stepSize))
 
     print(maxBuyAmount)
     # maxBuyAmount = float(calculateMaxBuy(limitPrice, btc_usdt_tickSize, usdt_raw_balance, btc_usdt_stepSize))
@@ -502,7 +515,7 @@ def maximizeSell():
     symbol = request.form['sellSymbol']
     limitPrice = request.form['sellPrice']
 
-    # limit sell therefore no fee is calculated
+    # limit sell no fee is calculated ??
 
     if symbol == "BTCUSDT":
         maxSellAmount = float(floatPrecision(btc_raw_balance, btc_usdt_stepSize))
@@ -511,10 +524,28 @@ def maximizeSell():
         maxSellAmount = float(floatPrecision(btc_raw_balance, btc_eur_stepSize))
         # maxSellAmount = floatPrecision((btc_raw_balance - (btc_raw_balance * btc_eur_fee)), btc_eur_stepSize) #no longer taker fee
     elif symbol == "EURUSDT":
-        maxSellAmount = "N/A"
+        maxSellAmount = float(floatPrecision(eur_raw_balance, btc_eur_stepSize))
 
     print(maxSellAmount)
     return jsonify({'maxSell': maxSellAmount})
+     
+@app.route('/max_autotrade', methods=['POST'])
+def maximizeAutotrade():
+    symbol = request.form['autoSymbol']
+
+    # limit sell no fee is calculated ???
+
+    if symbol == "BTCUSDT":
+        maxAutoAmount = float(floatPrecision(btc_raw_balance, btc_usdt_stepSize))
+        # maxSellAmount = floatPrecision((btc_raw_balance - (btc_raw_balance * btc_usdt_fee)), btc_usdt_stepSize) #no longer taker fee
+    elif symbol == "BTCEUR":
+        maxAutoAmount = float(floatPrecision(btc_raw_balance, btc_eur_stepSize))
+        # maxSellAmount = floatPrecision((btc_raw_balance - (btc_raw_balance * btc_eur_fee)), btc_eur_stepSize) #no longer taker fee
+    elif symbol == "EURUSDT":
+        maxAutoAmount = float(floatPrecision(eur_raw_balance, btc_eur_stepSize))
+
+    print(maxAutoAmount)
+    return jsonify({'maxAuto': maxAutoAmount})
      
 
 @app.route('/trade_history', methods=['POST']) 
