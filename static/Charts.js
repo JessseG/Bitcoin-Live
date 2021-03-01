@@ -241,14 +241,14 @@ var chart = LightweightCharts.createChart(document.getElementById("charts"), {
   crosshair: {
     mode: LightweightCharts.CrosshairMode.Normal,
     vertLine: {
-      color: "#6A5ACD",
+      color: "#8f82e6",
       width: 0.6,
       style: 2,
       visible: true,
       labelVisible: true,
     },
     horzLine: {
-      color: "#6A5ACD",
+      color: "#8f82e6",
       width: 0.6,
       style: 2,
       visible: true,

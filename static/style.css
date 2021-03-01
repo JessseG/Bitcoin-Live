@@ -145,8 +145,8 @@ select {
 
 #select-trade option {
   background: rgb(71, 71, 71);
-  font-size: 1.9vh;
-  letter-spacing: 0.2vw;
+  font-size: 0.75em;
+  /* letter-spacing: 0.2vw; */
 }
 
 #real-time-price {
@@ -1046,12 +1046,11 @@ h4 {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   border-bottom: 0.3px solid rgb(56, 70, 70);
   padding: 1.2vh 0.3vw;
-  font-family: "Open Sans";
-  font-size: 1.6vh;
+  font-size: 1.7vh;
   font-weight: 495;
   letter-spacing: 1px;
   text-align: center;
-  color: white;
+  color: #e8e4ff;
   background-color: #353544;
   white-space: normal;
   word-wrap: break-word;
