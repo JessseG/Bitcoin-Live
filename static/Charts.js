@@ -182,7 +182,7 @@ lastPriceSL.onclick = function () {
   if (price > 1000) sellLimitPrice.value = Math.floor(price);
   else if (price > 10 && price < 1000)
     sellLimitPrice.value = Math.round((price + Number.EPSILON) * 100) / 100;
-  else buyLimitPrice.value = price;
+  else sellLimitPrice.value = price;
   // console.log(sellLimitPrice.value);
 };
 
